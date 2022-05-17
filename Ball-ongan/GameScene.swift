@@ -18,13 +18,18 @@ class GameScene: SKScene {
     private var level = 1
     private var score = 0
     
+    func screenWidth() -> CGFloat {
+        return self.view!.bounds.width
+    }
+    
+    func screenHeight() -> CGFloat {
+        return self.view!.bounds.height
+    }
+    
     override func didMove(to view: SKView) {
         
-        let screenWidth = self.view!.bounds.width
-        let screenHeight = self.view!.bounds.height
-        
         background.zPosition = -1
-        background.size = CGSize(width: screenWidth, height: screenHeight)
+        background.size = CGSize(width: screenWidth(), height: screenHeight())
         addChild(background)
         
     }
