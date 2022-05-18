@@ -31,24 +31,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var pointsTotal = GKRandomDistribution(lowestValue: 1, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 1, highestValue: 3)
     
-    func screenWidth() -> CGFloat {
-        return frame.size.width
-    }
-    
-    func screenHeight() -> CGFloat {
-        return frame.size.height
-    }
-    
     override func didMove(to view: SKView) {
+        
         scoreLabel.zPosition = 10
-        scoreLabel.position.x = -screenWidth()/2 + 75
-        scoreLabel.position.y = screenWidth()/2 - 250
+        scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
+        scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
         scoreLabel.fontColor = SKColor.black
         addChild(scoreLabel)
         score = 0
         
         background.zPosition = -1
-        background.size = CGSize(width: screenWidth(), height: screenHeight())
+        background.size = CGSize(width: frame.maxX * 2, height: frame.maxY * 2)
         addChild(background)
         
         physicsWorld.contactDelegate = self
@@ -58,23 +51,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createPoint()
         createObstacle()
         
+        print("\(frame.maxY), \(frame.maxX)")
+        
     }
     
     func createPlayer() {
       
         player = SKSpriteNode(imageNamed: "player")
         player.size = CGSize(width: 50, height: 50)
-        player.position = CGPoint(x: -screenWidth()/4, y: 0)
+        player.position = CGPoint(x: -150, y: 0)
         player.name = "player"
         player.zPosition = 1
-      
-        player.physicsBody?.affectedByGravity = true
+        
+        player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.size)
+        player.physicsBody?.affectedByGravity = false
         player.physicsBody?.allowsRotation = true
         player.physicsBody?.isDynamic = true
         player.physicsBody?.categoryBitMask = 1
-        player.physicsBody?.collisionBitMask = 2
-        player.physicsBody?.fieldBitMask = 1
-        player.physicsBody?.contactTestBitMask = 2
         
         addChild(player)
       
@@ -107,12 +100,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.position.y = screenMaxY
         }
         
+        // Go to next stage
+        if player.position.x > -25 && player.position.x < 25 && player.position.y > -25 && player.position.y < 25 {
+            nextStage()
+        }
+        
     }
     
     func createPoint() {
         
-        let randomDistributionX = GKRandomDistribution(lowestValue: -Int(screenWidth()/2 - 75), highestValue: Int(screenWidth()/2 - 50))
-        let randomDistributionY = GKRandomDistribution(lowestValue: -Int(screenHeight()/2 - 30), highestValue: Int(screenHeight()/2 - 30))
+        let randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
+        let randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
         
         for _ in 0..<self.pointsTotal.nextInt() {
             
@@ -136,8 +134,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createObstacle() {
         
-        let randomDistributionX = GKRandomDistribution(lowestValue: -Int(screenWidth()/2 - 75), highestValue: Int(screenWidth()/2 - 50))
-        let randomDistributionY = GKRandomDistribution(lowestValue: -Int(screenHeight()/2 - 30), highestValue: Int(screenHeight()/2 - 30))
+        let randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
+        let randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
         
         for _ in 0..<self.obstaclesTotal.nextInt() {
             
@@ -184,6 +182,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         node.removeFromParent()
         
+    }
+    
+    func nextStage() {
+        score += stageScore
+        stageScore = 0
     }
     
 }
