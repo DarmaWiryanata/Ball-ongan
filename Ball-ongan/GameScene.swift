@@ -34,19 +34,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         scoreLabel.zPosition = 10
-        scoreLabel.position.x = frame.minX + 100
-        scoreLabel.position.y = frame.maxY - 100
+        scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
+        scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
         scoreLabel.fontColor = SKColor.black
-//        addChild(scoreLabel)
+        addChild(scoreLabel)
         score = 0
         
         background.zPosition = -1
         background.size = CGSize(width: frame.maxX * 2, height: frame.maxY * 2)
-//        addChild(background)
+        addChild(background)
         
         physicsWorld.contactDelegate = self
         
-//        createPlayer()
+        createPlayer()
         motionManager.startAccelerometerUpdates()
         createPoint()
         createObstacle()
@@ -168,7 +168,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         switch node.name {
         case "point":
-            print("point")
+            stageScore += 1
+            print(stageScore)
         case "obstacle":
             print("obstacle")
         default:
