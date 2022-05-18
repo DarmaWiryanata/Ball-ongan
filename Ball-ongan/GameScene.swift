@@ -100,6 +100,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.position.y = screenMaxY
         }
         
+        // Go to next stage
+        if player.position.x > -25 && player.position.x < 25 && player.position.y > -25 && player.position.y < 25 {
+            nextStage()
+        }
+        
     }
     
     func createPoint() {
@@ -169,7 +174,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch node.name {
         case "point":
             stageScore += 1
-            print(stageScore)
         case "obstacle":
             print("obstacle")
         default:
@@ -178,6 +182,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         node.removeFromParent()
         
+    }
+    
+    func nextStage() {
+        score += stageScore
+        stageScore = 0
     }
     
 }
