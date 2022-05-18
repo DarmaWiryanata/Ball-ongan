@@ -23,11 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             scoreLabel.text = "\(score) pts"
         }
     }
-    var wall : SKSpriteNode!
-    var player : SKSpriteNode!
-    //private var background = SKSpriteNode(imageNamed: "background")
-    private var obstacle = SKSpriteNode(imageNamed: "obstacle")
-    private var point = SKSpriteNode(imageNamed: "point")
+    
     let motionManager = CMMotionManager()
     var xAcceleration:CGFloat = 0
     var yAcceleration:CGFloat = 0
@@ -51,13 +47,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
         score = 0
         
-//        background.zPosition = -1
-//        background.size = CGSize(width: screenWidth(), height: screenHeight())
-//        addChild(background)
-       
-        
-        
-            
+        background.zPosition = -1
+        background.size = CGSize(width: screenWidth(), height: screenHeight())
+        addChild(background)
         
         physicsWorld.contactDelegate = self
         
@@ -89,31 +81,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval ){
+        
+        let screenMinX = frame.minX + 55
+        let screenMaxX = frame.maxX - 25
+        let screenMinY = frame.minY + 515
+        let screenMaxY = frame.maxY - 520
+        
         if let accelerometerData = motionManager.accelerometerData{
             let changeX = CGFloat(accelerometerData.acceleration.y) * 15
             let changeY = CGFloat(accelerometerData.acceleration.x) * 15
-            var posisiX = player.position.x
-            var posisiY = player.position.y
-            var screenMinX = frame.minX
-            var screenMaxX = frame.maxX
-            var screenMinY = frame.minY
-            var screenMaxY = frame.maxY
-            if player.position.x <  frame.minX {
-                player.position.x = frame.minX
-            }else if player.position.x > frame.maxX{
-                player.position.x = frame.maxX
-            }else{
-                player.position.x -= changeX
-            }
-            if player.position.y < -155{
-                player.position.y = -155
-            }else if player.position.y > 155{
-                player.position.y = 155
-            }else{
-                player.position.y += changeY
-            }
+            
+            player.position.x -= changeX
+            player.position.y += changeY
         }
+        
+        if player.position.x <  screenMinX {
+            player.position.x = screenMinX
+        } else if player.position.x > screenMaxX {
+            player.position.x = screenMaxX
+        }
+        
+        if player.position.y < screenMinY {
+            player.position.y = screenMinY
+        } else if player.position.y > screenMaxY {
+            player.position.y = screenMaxY
+        }
+        
     }
+    
     func createPoint() {
         
         let randomDistributionX = GKRandomDistribution(lowestValue: -Int(screenWidth()/2 - 75), highestValue: Int(screenWidth()/2 - 50))
