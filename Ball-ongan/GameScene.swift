@@ -19,11 +19,11 @@ class GameScene: SKScene {
     private var score = 0
     
     func screenWidth() -> CGFloat {
-        return self.view!.bounds.width
+        return frame.size.width
     }
     
     func screenHeight() -> CGFloat {
-        return self.view!.bounds.height
+        return frame.size.height
     }
     
     override func didMove(to view: SKView) {
