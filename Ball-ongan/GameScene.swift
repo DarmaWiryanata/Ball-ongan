@@ -7,14 +7,16 @@
 
 import SpriteKit
 import GameplayKit
-
+import CoreMotion
 class GameScene: SKScene {
-    
-    private var player = SKSpriteNode(imageNamed: "player")
-    private var background = SKSpriteNode(imageNamed: "background")
+    var wall : SKSpriteNode!
+    var player : SKSpriteNode!
+    //private var background = SKSpriteNode(imageNamed: "background")
     private var obstacle = SKSpriteNode(imageNamed: "obstacle")
     private var point = SKSpriteNode(imageNamed: "point")
-    
+    let motionManager = CMMotionManager()
+    var xAcceleration:CGFloat = 0
+    var yAcceleration:CGFloat = 0
     private var level = 1
     private var score = 0
     
@@ -28,25 +30,61 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
-        background.zPosition = -1
-        background.size = CGSize(width: screenWidth(), height: screenHeight())
-        addChild(background)
+//        background.zPosition = -1
+//        background.size = CGSize(width: screenWidth(), height: screenHeight())
+//        addChild(background)
+       
+        
+        
+            
         
         createPlayer()
+        motionManager.startAccelerometerUpdates()
         createPoint()
         createObstacle()
         
     }
     
     func createPlayer() {
-        let sprite = SKSpriteNode(imageNamed: "player")
-        sprite.position = CGPoint(x: -screenWidth()/4, y: 0)
-        sprite.size = CGSize(width: 50, height: 50)
-        sprite.name = "player"
-        sprite.zPosition = 1
-        addChild(sprite)
+        player = SKSpriteNode(imageNamed: "player")
+        player.physicsBody?.affectedByGravity = true
+        player.physicsBody?.allowsRotation = true
+        player.physicsBody?.isDynamic = true
+        player.physicsBody?.categoryBitMask = 1
+        player.physicsBody?.collisionBitMask = 2
+        player.physicsBody?.fieldBitMask = 1
+        player.physicsBody?.contactTestBitMask = 2
+        player.size = CGSize(width: 50, height: 50)
+        
+        self.addChild(player)
     }
     
+    override func update(_ currentTime: TimeInterval ){
+        if let accelerometerData = motionManager.accelerometerData{
+            let changeX = CGFloat(accelerometerData.acceleration.y) * 15
+            let changeY = CGFloat(accelerometerData.acceleration.x) * 15
+            var posisiX = player.position.x
+            var posisiY = player.position.y
+            var screenMinX = frame.minX
+            var screenMaxX = frame.maxX
+            var screenMinY = frame.minY
+            var screenMaxY = frame.maxY
+            if player.position.x <  frame.minX {
+                player.position.x = frame.minX
+            }else if player.position.x > frame.maxX{
+                player.position.x = frame.maxX
+            }else{
+                player.position.x -= changeX
+            }
+            if player.position.y < -155{
+                player.position.y = -155
+            }else if player.position.y > 155{
+                player.position.y = 155
+            }else{
+                player.position.y += changeY
+            }
+        }
+    }
     func createPoint() {
         
         let pointsTotal = level + 2
@@ -83,7 +121,4 @@ class GameScene: SKScene {
         
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
 }
