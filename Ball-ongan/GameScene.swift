@@ -50,9 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         motionManager.startAccelerometerUpdates()
         createPoint()
         createObstacle()
-        
-        print("\(frame.maxY), \(frame.maxX)")
-        
+                
     }
     
     func createPlayer() {
@@ -107,15 +105,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    enum playerPosition: Int {
+    case minX = -200
+    case maxX = -100
+    case minY = -50
+    case maxY = 50
+    }
+    
+    enum goalPosition: Int {
+    case min = -100
+    case max = 100
+    }
+    
+    func randomDistribution() -> [String : Int] {
+        
+        var randomDistributionX: GKRandomDistribution?
+        var randomDistributionY: GKRandomDistribution?
+        
+        repeat {
+            randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
+            randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
+        } while // Compare with player position
+                (randomDistributionX!.nextInt() > playerPosition.minX.rawValue && randomDistributionX!.nextInt() < playerPosition.maxX.rawValue)
+             || (randomDistributionY!.nextInt() > playerPosition.minY.rawValue && randomDistributionY!.nextInt() < playerPosition.maxY.rawValue)
+                // Compare with goal position
+             || (randomDistributionX!.nextInt() > goalPosition.min.rawValue && randomDistributionX!.nextInt() < goalPosition.max.rawValue)
+             || (randomDistributionY!.nextInt() > goalPosition.min.rawValue && randomDistributionY!.nextInt() < goalPosition.max.rawValue)
+        
+        return [
+            "x": randomDistributionX!.nextInt(),
+            "y": randomDistributionY!.nextInt()
+        ]
+        
+    }
+    
     func createPoint() {
         
-        let randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
-        let randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
+        let ptTotal: Int = self.pointsTotal.nextInt()
         
-        for _ in 0..<self.pointsTotal.nextInt() {
+        for _ in 0..<ptTotal {
+            
+            let position = randomDistribution()
+            guard let posX = position["x"] else { continue }
+            guard let posY = position["y"] else { continue }
             
             let sprite = SKSpriteNode(imageNamed: "point")
-            sprite.position = CGPoint(x: randomDistributionX.nextInt(), y: randomDistributionY.nextInt())
+            sprite.position = CGPoint(x: posX, y: posY)
+            
             sprite.size = CGSize(width: 25, height: 25)
             sprite.name = "point"
             sprite.zPosition = 1
@@ -134,13 +170,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createObstacle() {
         
-        let randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
-        let randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
+        let obTotal: Int = self.obstaclesTotal.nextInt()
         
-        for _ in 0..<self.obstaclesTotal.nextInt() {
+        for _ in 0..<obTotal {
+            
+            let position = randomDistribution()
+            guard let posX = position["x"] else { continue }
+            guard let posY = position["y"] else { continue }
             
             let sprite = SKSpriteNode(imageNamed: "obstacle")
-            sprite.position = CGPoint(x: randomDistributionX.nextInt(), y: randomDistributionY.nextInt())
+            sprite.position = CGPoint(x: posX, y: posY)
             sprite.size = CGSize(width: 25, height: 25)
             sprite.name = "obstacle"
             sprite.zPosition = 1
