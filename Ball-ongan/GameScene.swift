@@ -107,6 +107,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    enum playerPosition: Int {
+    case minX = -200
+    case maxX = -100
+    case minY = -50
+    case maxY = 50
+    }
+    
+    enum goalPosition: Int {
+    case min = -100
+    case max = 100
+    }
+    
     func createPoint() {
         
         let randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
