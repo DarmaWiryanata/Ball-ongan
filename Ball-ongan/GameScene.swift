@@ -54,8 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createPlayer() {
-      
-        player = SKSpriteNode(imageNamed: "player")
+        
         player.size = CGSize(width: 50, height: 50)
         player.position = CGPoint(x: -150, y: 0)
         player.name = "player"
@@ -226,6 +225,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func nextStage() {
         score += stageScore
         stageScore = 0
+        
+        print(point)
+        point.removeFromParent()
+        obstacle.removeFromParent()
+        player.position = CGPoint(x: -100, y: 0)
+        
+        createPoint()
+        createObstacle()
     }
     
 }
