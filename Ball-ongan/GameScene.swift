@@ -223,14 +223,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func nextStage() {
+        // Store score to next stage
         score += stageScore
         stageScore = 0
         
-        print(point)
-        point.removeFromParent()
-        obstacle.removeFromParent()
+        // Remove point & children nodes
+        for c in children {
+            if c.name == "point" || c.name == "obstacle" {
+                c.removeFromParent()
+            }
+        }
+        
+        // Reset player
         player.position = CGPoint(x: -100, y: 0)
         
+        // Create new point & children nodes
         createPoint()
         createObstacle()
     }
