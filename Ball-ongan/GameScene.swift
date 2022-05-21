@@ -224,15 +224,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func nextStage() {
         
-        print("score: \(stageScore)")
-        print("jumlah poin lama: \(stagePoint)")
         // Store score to next stage
         if stageScore == stagePoint {
             score += stageScore
         }
         stageScore = 0
         stagePoint = 0
-        print("jumlah poin baru: \(stagePoint)")
         
         // Remove point & children nodes
         for c in children {
