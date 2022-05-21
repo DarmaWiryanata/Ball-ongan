@@ -13,11 +13,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player = SKSpriteNode(imageNamed: "player")
     private var background = SKSpriteNode(imageNamed: "background")
-    private var obstacle = SKSpriteNode(imageNamed: "obstacle")
-    private var point = SKSpriteNode(imageNamed: "point")
     private var scoreLabel = SKLabelNode()
     
     private var stageScore = 0
+    private var stagePoint = 0
     private var score = 0 {
         didSet {
             scoreLabel.text = "\(score) pts"
@@ -56,8 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func createPlayer() {
-
-        player = SKSpriteNode(imageNamed: "player")
+      
         player.size = CGSize(width: 50, height: 50)
         player.position = CGPoint(x: -150, y: 0)
         player.name = "player"
@@ -146,7 +144,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createPoint() {
 
         let ptTotal: Int = self.pointsTotal.nextInt()
-
+        stagePoint = ptTotal
+      
         for _ in 0..<ptTotal {
 
             let position = randomDistribution()
@@ -228,8 +227,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func nextStage() {
-        score += stageScore
+        
+        // Store score to next stage
+        if stageScore == stagePoint {
+            score += stageScore
+        }
         stageScore = 0
+        stagePoint = 0
+        
+        // Remove point & children nodes
+        for c in children {
+            if c.name == "point" || c.name == "obstacle" {
+                c.removeFromParent()
+            }
+        }
+        
+        // Reset player
+        player.position = CGPoint(x: -100, y: 0)
+        
+        // Create new point & children nodes
+        createPoint()
+        createObstacle()
+        
     }
     
     //Longan
