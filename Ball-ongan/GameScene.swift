@@ -12,36 +12,81 @@ import CoreMotion
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player = SKSpriteNode(imageNamed: "player")
-    private var background = SKSpriteNode(imageNamed: "background")
+    public var background = SKSpriteNode(imageNamed: "background")
     private var obstacle = SKSpriteNode(imageNamed: "obstacle")
     private var point = SKSpriteNode(imageNamed: "point")
     private var scoreLabel = SKLabelNode()
-    
     private var stageScore = 0
     private var score = 0 {
         didSet {
             scoreLabel.text = "\(score) pts"
         }
     }
-    
+    private var timerNode = SKLabelNode()
+    private var minute: Int = 0
+    private var second: Int = 60
+    private var time: Int = 21
+    {
+        didSet
+        {
+            
+            if time <= 120 && time % 60 < 10
+            {
+                timerNode.text = "0\(time / 60 % 60) : 0\(time % 60)"
+            }
+            else if time <= 120 && time > 60
+            {
+                timerNode.text = "0\(time / 60 % 60) : \(time % 60)"
+            }
+            else if time < 10
+            {
+                timerNode.text = "00 : 0\(time)"
+            }
+            else if time <= 60
+            {
+                timerNode.text = "00 : \(time)"
+            }
+            
+        }
+    }
+    private func countdown() -> Void
+    {
+        
+        time -= 1
+        
+        if (time <= 0 )
+        {
+            endGame()
+        }
+    }
     let motionManager = CMMotionManager()
     var xAcceleration:CGFloat = 0
     var yAcceleration:CGFloat = 0
     
-    private var pointsTotal = GKRandomDistribution(lowestValue: 1, highestValue: 10)
-    private var obstaclesTotal = GKRandomDistribution(lowestValue: 1, highestValue: 3)
+    private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
+    private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
     
     override func didMove(to view: SKView) {
-        
+     //   let test2 = frame.size
+        let test1 = frame.size
+        // Add Timer
+        timerNode.zPosition =  2
+        timerNode.position.x = CGFloat(Int(frame.minY) + 950)
+        timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
+        timerNode.fontColor = SKColor.white
+        addChild(timerNode)
+        time = 120
+        run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
+        // Add Score
         scoreLabel.zPosition = 10
         scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
         scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
-        scoreLabel.fontColor = SKColor.black
+        scoreLabel.fontColor = SKColor.white
         addChild(scoreLabel)
         score = 0
         
         background.zPosition = -1
-        background.size = CGSize(width: frame.maxX * 2, height: frame.maxY * 2)
+        background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
         addChild(background)
         
         physicsWorld.contactDelegate = self
@@ -52,6 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createObstacle()
                 
     }
+    
     
     func createPlayer() {
       
@@ -214,7 +260,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case "point":
             stageScore += 1
         case "obstacle":
-            print("obstacle")
+            time -= 10
         default:
             print("empty node")
         }
@@ -226,6 +272,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func nextStage() {
         score += stageScore
         stageScore = 0
+    }
+    
+    func endGame(){
+        let endGame = EndGame(fileNamed: "EndGame")
+        endGame!.scaleMode = .aspectFill
+        let transition = SKTransition.fade(withDuration: 0.3)
+        self.view?.presentScene(endGame!,transition: transition)
     }
     
 }
