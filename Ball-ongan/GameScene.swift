@@ -13,11 +13,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player = SKSpriteNode(imageNamed: "player")
     private var background = SKSpriteNode(imageNamed: "background")
-    private var obstacle = SKSpriteNode(imageNamed: "obstacle")
-    private var point = SKSpriteNode(imageNamed: "point")
     private var scoreLabel = SKLabelNode()
     
     private var stageScore = 0
+    private var stagePoint = 0
     private var score = 0 {
         didSet {
             scoreLabel.text = "\(score) pts"
@@ -141,6 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createPoint() {
         
         let ptTotal: Int = self.pointsTotal.nextInt()
+        stagePoint = ptTotal
         
         for _ in 0..<ptTotal {
             
@@ -223,9 +223,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func nextStage() {
+        
+        print("score: \(stageScore)")
+        print("jumlah poin lama: \(stagePoint)")
         // Store score to next stage
-        score += stageScore
+        if stageScore == stagePoint {
+            score += stageScore
+        }
         stageScore = 0
+        stagePoint = 0
+        print("jumlah poin baru: \(stagePoint)")
         
         // Remove point & children nodes
         for c in children {
@@ -240,6 +247,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Create new point & children nodes
         createPoint()
         createObstacle()
+        
     }
     
 }
