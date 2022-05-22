@@ -15,7 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     public var background = SKSpriteNode(imageNamed: "background")
     private var music = SKAudioNode(fileNamed: "music.wav")
   
-    private var scoreLabel = SKLabelNode()
+    private var scoreLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var stageScore = 0
     private var stagePoint = 0
     private var score = 0 {
@@ -24,7 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
   
-    private var timerNode = SKLabelNode()
+    private var timerNode = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var minute: Int = 0
     private var second: Int = 60
     private var time: Int = 21 {
@@ -57,9 +57,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
-    
     override func didMove(to view: SKView) {
+        // First launch
         
+        if Firstimer.shared.isNewUser() {
+            Firstimer.shared.isNotNewuser()
+            let tutorial = TutorialScene1(fileNamed: "TutorialScene1")
+            tutorial!.scaleMode = .aspectFill
+            let transition = SKTransition.fade(withDuration: 0.3)
+            self.view?.presentScene(tutorial!,transition: transition)
+        }else{
         // Add Timer
         timerNode.zPosition =  2
         timerNode.position.x = CGFloat(Int(frame.minY) + 950)
@@ -89,7 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         motionManager.startAccelerometerUpdates()
         createPoint()
         createObstacle()
-                
+        }
     }
   
     func createPlayer() {
@@ -389,9 +396,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         music.removeFromParent()
         
         let endGame = EndGame(fileNamed: "EndGame")
+        endGame?.scoreVal = score
         endGame!.scaleMode = .aspectFill
         let transition = SKTransition.fade(withDuration: 0.3)
         self.view?.presentScene(endGame!,transition: transition)
     }
     
+}
+
+class Firstimer {
+    static let shared = Firstimer()
+    
+    func isNewUser() -> Bool{
+        return !UserDefaults.standard.bool(forKey: "isNewUser")
+    }
+    func isNotNewuser(){
+        UserDefaults.standard.set(true ,forKey: "isNewUser")
+    }
 }

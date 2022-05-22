@@ -13,7 +13,7 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
     private var startButton = SKSpriteNode(imageNamed: "Start")
     private var background = SKSpriteNode(imageNamed: "background")
     private var title = SKSpriteNode(imageNamed: "Title")
-    private var text = SKLabelNode()
+    private var text = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     
     override func didMove(to view: SKView) {
         
