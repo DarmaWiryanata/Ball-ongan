@@ -11,6 +11,7 @@
 		93457CF12838BDF500DC00BE /* EndGame.sks in Resources */ = {isa = PBXBuildFile; fileRef = 93457CF02838BDF500DC00BE /* EndGame.sks */; };
 		934AAAF728379BAA008CAE64 /* StartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AAAF628379BAA008CAE64 /* StartMenu.swift */; };
 		934AAAF928379E09008CAE64 /* StartMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 934AAAF828379E09008CAE64 /* StartMenu.sks */; };
+		FACE72C02839B7CA004D3DF0 /* music.wav in Resources */ = {isa = PBXBuildFile; fileRef = FACE72BF2839B7CA004D3DF0 /* music.wav */; };
 		FAEA2BA9282A6DDF00ED6152 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA2BA8282A6DDF00ED6152 /* AppDelegate.swift */; };
 		FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */; };
 		FAEA2BAD282A6DDF00ED6152 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BAC282A6DDF00ED6152 /* Actions.sks */; };
@@ -26,6 +27,7 @@
 		93457CF02838BDF500DC00BE /* EndGame.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EndGame.sks; sourceTree = "<group>"; };
 		934AAAF628379BAA008CAE64 /* StartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenu.swift; sourceTree = "<group>"; };
 		934AAAF828379E09008CAE64 /* StartMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartMenu.sks; sourceTree = "<group>"; };
+		FACE72BF2839B7CA004D3DF0 /* music.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = music.wav; path = ../../../../../../../Downloads/music.wav; sourceTree = "<group>"; };
 		FAEA2BA5282A6DDF00ED6152 /* Ball-ongan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ball-ongan.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEA2BA8282A6DDF00ED6152 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				934AAAF828379E09008CAE64 /* StartMenu.sks */,
 				93457CEE2838BA5D00DC00BE /* EndGame.swift */,
 				93457CF02838BDF500DC00BE /* EndGame.sks */,
+				FACE72BF2839B7CA004D3DF0 /* music.wav */,
 			);
 			path = "Ball-ongan";
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 				93457CF12838BDF500DC00BE /* EndGame.sks in Resources */,
 				FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */,
 				934AAAF928379E09008CAE64 /* StartMenu.sks in Resources */,
+				FACE72C02839B7CA004D3DF0 /* music.wav in Resources */,
 				FAEA2BB6282A6DE100ED6152 /* Assets.xcassets in Resources */,
 				FAEA2BB9282A6DE100ED6152 /* LaunchScreen.storyboard in Resources */,
 				FAEA2BAD282A6DDF00ED6152 /* Actions.sks in Resources */,
@@ -309,7 +313,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M6ZNZ32B86;
+				DEVELOPMENT_TEAM = 6PDVJXGB2J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -324,7 +328,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ball-ongan";
+				PRODUCT_BUNDLE_IDENTIFIER = com.darmawiryanata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -339,7 +343,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M6ZNZ32B86;
+				DEVELOPMENT_TEAM = 6PDVJXGB2J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -354,7 +358,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ball-ongan";
+				PRODUCT_BUNDLE_IDENTIFIER = com.darmawiryanata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
