@@ -137,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         // Go to next stage
-        if player.position.x > -25 && player.position.x < 25 && player.position.y > -25 && player.position.y < 25 {
+        if player.position.x > -40 && player.position.x < 40 && player.position.y > -40 && player.position.y < 40 {
             nextStage()
         }
 
@@ -199,7 +199,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
             sprite.physicsBody?.affectedByGravity = false
-
             sprite.physicsBody?.contactTestBitMask = 1
             sprite.physicsBody?.categoryBitMask = 0
             sprite.physicsBody?.collisionBitMask = 0
@@ -227,7 +226,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
             sprite.physicsBody?.affectedByGravity = false
-
             sprite.physicsBody?.contactTestBitMask = 1
             sprite.physicsBody?.categoryBitMask = 0
 
@@ -341,6 +339,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         section.strokeColor = color
         section.zPosition = 0
         section.name = "goal"
+        
+//        section.physicsBody = SKPhysicsBody(circleOfRadius: 20)
+//        section.physicsBody?.affectedByGravity = false
+//        section.physicsBody?.contactTestBitMask = 1
+//        section.physicsBody?.categoryBitMask = 0
+//        section.physicsBody?.collisionBitMask = 0
+        
         addChild(section)
         
     }
