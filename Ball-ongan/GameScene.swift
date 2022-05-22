@@ -13,6 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player = SKSpriteNode(imageNamed: "player")
     public var background = SKSpriteNode(imageNamed: "background")
+    private var music = SKAudioNode(fileNamed: "music.wav")
   
     private var scoreLabel = SKLabelNode()
     private var stageScore = 0
@@ -58,8 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
     
     override func didMove(to view: SKView) {
-        // let test2 = frame.size
-        let test1 = frame.size
+        
         // Add Timer
         timerNode.zPosition =  2
         timerNode.position.x = CGFloat(Int(frame.minY) + 950)
@@ -82,6 +82,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background.zPosition = -1
         background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
         addChild(background)
+        
+        addChild(music)
         
         physicsWorld.contactDelegate = self
         
@@ -142,8 +144,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
     }
-
-
 
     enum playerPosition: Int {
     case minX = -200
@@ -289,8 +289,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    //Longan
-    
+    // Longan
     func addCircleObstacle(divider : Int, glow : Int, circle_rotation : Double) {
         
         //circle outline
@@ -356,7 +355,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return container
     }
     
-    func endGame(){
+    func endGame() {
+        music.removeFromParent()
+        
         let endGame = EndGame(fileNamed: "EndGame")
         endGame!.scaleMode = .aspectFill
         let transition = SKTransition.fade(withDuration: 0.3)
