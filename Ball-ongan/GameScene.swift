@@ -144,35 +144,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     enum playerPosition: Int {
-    case minX = -200
-    case maxX = -100
-    case minY = -50
-    case maxY = 50
+    case minX = -160
+    case maxX = -140
+    case minY = -10
+    case maxY = 10
     }
 
     enum goalPosition: Int {
-    case min = -100
-    case max = 100
+    case min = -25
+    case max = 25
     }
 
     func randomDistribution() -> [String : Int] {
 
         var randomDistributionX: GKRandomDistribution?
         var randomDistributionY: GKRandomDistribution?
+        
+        var x: Int
+        var y: Int
 
         repeat {
             randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
             randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
+            
+            x = randomDistributionX!.nextInt()
+            y = randomDistributionY!.nextInt()
         } while // Compare with player position
-                (randomDistributionX!.nextInt() > playerPosition.minX.rawValue && randomDistributionX!.nextInt() < playerPosition.maxX.rawValue)
-             || (randomDistributionY!.nextInt() > playerPosition.minY.rawValue && randomDistributionY!.nextInt() < playerPosition.maxY.rawValue)
+                (x > playerPosition.minX.rawValue && x < playerPosition.maxX.rawValue)
+             || (y > playerPosition.minY.rawValue && y < playerPosition.maxY.rawValue)
                 // Compare with goal position
-             || (randomDistributionX!.nextInt() > goalPosition.min.rawValue && randomDistributionX!.nextInt() < goalPosition.max.rawValue)
-             || (randomDistributionY!.nextInt() > goalPosition.min.rawValue && randomDistributionY!.nextInt() < goalPosition.max.rawValue)
+             || (x > goalPosition.min.rawValue && x < goalPosition.max.rawValue)
+             || (y > goalPosition.min.rawValue && y < goalPosition.max.rawValue)
 
         return [
-            "x": randomDistributionX!.nextInt(),
-            "y": randomDistributionY!.nextInt()
+            "x": x,
+            "y": y
         ]
 
     }
