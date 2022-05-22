@@ -42,13 +42,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   
     private func countdown() -> Void {
-        
+
         time -= 1
-        
+
         if (time <= 0 ) {
             endGame()
         }
-      
+
     }
   
     let motionManager = CMMotionManager()
@@ -68,8 +68,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(timerNode)
         time = 120
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
-        
-        addCircleObstacle(divider: 10, glow: 3, circle_rotation: 0.47)
       
         // Add Score
         scoreLabel.zPosition = 10
@@ -139,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         // Go to next stage
-        if player.position.x > -25 && player.position.x < 25 && player.position.y > -25 && player.position.y < 25 {
+        if player.position.x > -40 && player.position.x < 40 && player.position.y > -40 && player.position.y < 40 {
             nextStage()
         }
 
@@ -181,10 +179,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     func createPoint() {
 
-        let ptTotal: Int = self.pointsTotal.nextInt()
-        stagePoint = ptTotal
+        stagePoint = self.pointsTotal.nextInt()
+        
+        addCircleObstacle(divider: stagePoint, glow: stageScore, circle_rotation: 0.47)
       
-        for _ in 0..<ptTotal {
+        for _ in 0..<stagePoint {
 
             let position = randomDistribution()
             guard let posX = position["x"] else { continue }
@@ -200,7 +199,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
             sprite.physicsBody?.affectedByGravity = false
-
             sprite.physicsBody?.contactTestBitMask = 1
             sprite.physicsBody?.categoryBitMask = 0
             sprite.physicsBody?.collisionBitMask = 0
@@ -228,7 +226,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
             sprite.physicsBody?.affectedByGravity = false
-
             sprite.physicsBody?.contactTestBitMask = 1
             sprite.physicsBody?.categoryBitMask = 0
 
@@ -253,7 +250,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         switch node.name {
         case "point":
-            stageScore += 1
+            playerHitPoint()
         case "obstacle":
             time -= 10
         default:
@@ -261,6 +258,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
         node.removeFromParent()
+
+    }
+    
+    func playerHitPoint() {
+        
+        stageScore += 1
+        
+        // Remove point & children nodes
+        for c in children {
+            if c.name == "goal" || c.name == "goalPoints" {
+                c.removeFromParent()
+            }
+        }
+        
+        addCircleObstacle(divider: stagePoint, glow: stageScore, circle_rotation: 0.47)
 
     }
 
@@ -275,7 +287,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Remove point & children nodes
         for c in children {
-            if c.name == "point" || c.name == "obstacle" {
+            if c.name == "point" || c.name == "obstacle" || c.name == "goal" || c.name == "goalPoints" {
                 c.removeFromParent()
             }
         }
@@ -292,7 +304,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Longan
     func addCircleObstacle(divider : Int, glow : Int, circle_rotation : Double) {
         
-        //circle outline
+        // Circle outline
         var path = UIBezierPath()
         let one_part : Double = 2 / Double(divider)
         let down_degree = circle_rotation * Double.pi
@@ -303,10 +315,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     clockwise: false)
         let circle_outline = obstacleByDuplicatingPath(path, clockwise: true, divider: divider, glow: glow)
         circle_outline.position = CGPoint(x: 0, y: 0)
-        circle_outline.zPosition = 10
+        circle_outline.zPosition = 0
+        circle_outline.name = "goalPoints"
         addChild(circle_outline)
         
-        //circle inside
+        // Circle inside
         path = UIBezierPath()
         path.addArc(withCenter: CGPoint.zero,
                     radius: 30,
@@ -317,14 +330,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let section = SKShapeNode(path: path.cgPath)
         section.position = CGPoint(x: 0, y: 0)
         let color : SKColor
-        if divider == glow{
+        if divider == glow {
             color = .orange
-        }else{
+        } else {
             color = .purple
         }
         section.fillColor = color
         section.strokeColor = color
-        section.zPosition = 10
+        section.zPosition = 0
+        section.name = "goal"
+        
+//        section.physicsBody = SKPhysicsBody(circleOfRadius: 20)
+//        section.physicsBody?.affectedByGravity = false
+//        section.physicsBody?.contactTestBitMask = 1
+//        section.physicsBody?.categoryBitMask = 0
+//        section.physicsBody?.collisionBitMask = 0
+        
         addChild(section)
         
     }
@@ -338,13 +359,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if !clockwise {
             rotationFactor *= -1
         }
+        
+        print(divider)
+        print(glow)
 
-        for i in 0...Int(divider-1) {
+        for i in 0...divider-1 {
             let section = SKShapeNode(path: path.cgPath)
             section.lineWidth = 5
-            if i < glow{
+            if i < glow {
                 section.strokeColor = .orange
-            }else{
+            } else {
                 section.strokeColor = .purple
             }
             section.zRotation = -((rotationFactor) * CGFloat(i));
