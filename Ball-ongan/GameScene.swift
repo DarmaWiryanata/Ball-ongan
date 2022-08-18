@@ -29,14 +29,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var second: Int = 60
     private var time: Int = 21 {
         didSet {
-            if time <= 120 && time % 60 < 10 {
-                timerNode.text = "0\(time / 60 % 60) : 0\(time % 60)"
-            } else if time <= 120 && time > 60 {
-                timerNode.text = "0\(time / 60 % 60) : \(time % 60)"
-            } else if time < 10 {
-                timerNode.text = "00 : 0\(time)"
-            } else if time <= 60 {
-                timerNode.text = "00 : \(time)"
+            if time >= 0{
+                if time <= 120 && time % 60 < 10 {
+                    timerNode.text = "0\(time / 60 % 60) : 0\(time % 60)"
+                } else if time <= 120 && time > 60 {
+                    timerNode.text = "0\(time / 60 % 60) : \(time % 60)"
+                } else if time < 10 {
+                    timerNode.text = "00 : 0\(time)"
+                } else if time <= 60 {
+                    timerNode.text = "00 : \(time)"
+                }
             }
         }
     }

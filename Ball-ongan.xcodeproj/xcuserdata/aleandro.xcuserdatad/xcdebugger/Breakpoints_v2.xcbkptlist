@@ -7,15 +7,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DB5373AA-C4F3-4F92-909B-2145C0F72E85"
-            shouldBeEnabled = "Yes"
+            uuid = "8279A532-750A-4221-A41B-BA692F6BCE8D"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Ball-ongan/TutorialScene1.swift"
+            filePath = "Ball-ongan/StartMenu.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "touchesBegan(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
