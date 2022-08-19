@@ -70,7 +70,7 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
         loading.text = "loading..."
         loading.fontColor = SKColor.white
         loading.position.x = CGFloat(0)
-        loading.position.y = CGFloat(-100)
+        loading.position.y = CGFloat(-120)
         loading.zPosition = 120
         addChild(loading)
         

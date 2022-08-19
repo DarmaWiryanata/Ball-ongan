@@ -24,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 scoreLabel.text = "\(score) pts"
             }
             else if gameMode == "survival"{
+                SurvivalMode.shared.setScore(score: score)
                 let currentScore = SurvivalMode.shared.getScore()
                 if currentScore <= 0{
                     scoreLabel.text = "\(score) pts"
@@ -362,7 +363,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 score += stageScore
                 level += 1
                 SurvivalMode.shared.setLevel(level: level)
-                SurvivalMode.shared.setScore(score: score)
             }
         }
         stageScore = 0
