@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55E6546728AF2F9B00597DCE /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E6546628AF2F9B00597DCE /* Spark.sks */; };
+		55E6546B28AF332A00597DCE /* Blast.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E6546A28AF332A00597DCE /* Blast.sks */; };
 		93457CEF2838BA5D00DC00BE /* EndGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93457CEE2838BA5D00DC00BE /* EndGame.swift */; };
 		93457CF12838BDF500DC00BE /* EndGame.sks in Resources */ = {isa = PBXBuildFile; fileRef = 93457CF02838BDF500DC00BE /* EndGame.sks */; };
 		934AAAF728379BAA008CAE64 /* StartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934AAAF628379BAA008CAE64 /* StartMenu.swift */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55E6546628AF2F9B00597DCE /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
+		55E6546A28AF332A00597DCE /* Blast.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Blast.sks; sourceTree = "<group>"; };
 		93457CEE2838BA5D00DC00BE /* EndGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGame.swift; sourceTree = "<group>"; };
 		93457CF02838BDF500DC00BE /* EndGame.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EndGame.sks; sourceTree = "<group>"; };
 		934AAAF628379BAA008CAE64 /* StartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenu.swift; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 				FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */,
 				FAEA2BAC282A6DDF00ED6152 /* Actions.sks */,
 				FAEA2BAE282A6DDF00ED6152 /* GameScene.swift */,
+				55E6546A28AF332A00597DCE /* Blast.sks */,
+				55E6546628AF2F9B00597DCE /* Spark.sks */,
 				FAEA2BB0282A6DDF00ED6152 /* GameViewController.swift */,
 				FAEA2BB2282A6DDF00ED6152 /* Main.storyboard */,
 				FAEA2BB5282A6DE100ED6152 /* Assets.xcassets */,
@@ -161,8 +167,10 @@
 				93457CF12838BDF500DC00BE /* EndGame.sks in Resources */,
 				FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */,
 				934AAAF928379E09008CAE64 /* StartMenu.sks in Resources */,
+				55E6546B28AF332A00597DCE /* Blast.sks in Resources */,
 				FAEA2BB6282A6DE100ED6152 /* Assets.xcassets in Resources */,
 				FAEA2BB9282A6DE100ED6152 /* LaunchScreen.storyboard in Resources */,
+				55E6546728AF2F9B00597DCE /* Spark.sks in Resources */,
 				936A56E2283A3FCB00F769F1 /* music.wav in Resources */,
 				FAEA2BAD282A6DDF00ED6152 /* Actions.sks in Resources */,
 			);
@@ -327,7 +335,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M6ZNZ32B86;
+				DEVELOPMENT_TEAM = Y26BLZ69B8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Ball-ongan/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -358,7 +366,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M6ZNZ32B86;
+				DEVELOPMENT_TEAM = Y26BLZ69B8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Ball-ongan/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

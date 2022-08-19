@@ -8,6 +8,8 @@
 import SpriteKit
 import GameplayKit
 import CoreMotion
+import Foundation
+import AudioToolbox
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -260,11 +262,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func playerHit(_ node: SKNode) {
-
+        
         switch node.name {
         case "point":
             playerHitPoint()
         case "obstacle":
+            
+            //TODO: feedback when hitting the node
+            if let particles = SKEmitterNode(fileNamed: "Blast.sks"){
+                particles.position = player.position
+                particles.zPosition = 3
+                addChild(particles)
+                
+                //Haptic feedback when hitting a node
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                
+            }
+            
+            //TODO: Sound buat obstacle
+//            let sound = SKAction.playSoundFileNamed("place sound here", waitForCompletion: false)
+//            run(sound)
+            
             time -= 10
         default:
             print("empty node")
@@ -277,6 +295,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func playerHitPoint() {
         
         stageScore += 1
+        if let particles = SKEmitterNode(fileNamed: "Spark.sks"){
+            particles.position = player.position
+            particles.zPosition = 3
+            addChild(particles)
+        }
         
         // Remove point & children nodes
         for c in children {
@@ -352,12 +375,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         section.strokeColor = color
         section.zPosition = 0
         section.name = "goal"
-        
-//        section.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-//        section.physicsBody?.affectedByGravity = false
-//        section.physicsBody?.contactTestBitMask = 1
-//        section.physicsBody?.categoryBitMask = 0
-//        section.physicsBody?.collisionBitMask = 0
         
         addChild(section)
         
