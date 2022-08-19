@@ -11,12 +11,16 @@ import CoreMotion
 
 class EndGame: SKScene, SKPhysicsContactDelegate {
     private var startButton = SKSpriteNode(imageNamed: "Start")
+    private var homeButton = SKSpriteNode(imageNamed: "home")
     private var background = SKSpriteNode(imageNamed: "background")
     private var score = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var highScore = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var text = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var playAgain = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    private var home = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    private var modeText = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     var scoreVal : Int?
+    var gameMode : String?
     override func didMove(to view: SKView) {
         
         background.zPosition = -1
@@ -25,8 +29,15 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
         
         startButton.zPosition = 0
         startButton.position.y = -10
+        startButton.position.x = 85
         startButton.size = CGSize(width: 100, height: 100)
         addChild(startButton)
+        
+        homeButton.zPosition = 0
+        homeButton.position.y = -10
+        homeButton.position.x = -85
+        homeButton.size = CGSize(width: 100, height: 100)
+        addChild(homeButton)
         
         
         let highScoreVal  = highScore(score: scoreVal!)
@@ -43,9 +54,22 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
         addChild(score)
         
         playAgain.position.y = -100
+        playAgain.position.x = 85
         playAgain.fontSize = 20
         playAgain.text = "PLAY AGAIN"
         addChild(playAgain)
+        
+        home.position.y = -100
+        home.position.x = -85
+        home.fontSize = 20
+        home.text = "MAIN MENU"
+        addChild(home)
+        
+        modeText.position.y = -140
+        modeText.fontSize = 20
+        let gametext: String = String(gameMode!)
+        modeText.text = gametext
+        addChild(modeText)
         
         
         
@@ -70,25 +94,37 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
             
             let location = touch.location(in: self)
             
-            if location.y < 50 && location.y > -50 && location.x < 50 && location.x > -50 {
-                
+            if location.y < 50 && location.y > -50 && location.x > -135 && location.x < -35 {
                 text.text = "loading..."
                 text.fontColor = SKColor.white
                 text.position.x = CGFloat(0)
-                text.position.y = CGFloat(-100)
-                text.zPosition = 120
+                text.position.y = CGFloat(-160)
+                addChild(text)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    let scene = StartMenu(fileNamed: "StartMenu")
+                    scene!.scaleMode = .aspectFill
+                    let transition = SKTransition.fade(withDuration: 0.5)
+                    self.view?.presentScene(scene!,transition: transition)
+                }
+            }
+            
+            if location.y < 50 && location.y > -50 && location.x < 135 && location.x > 35 {
+                text.text = "loading..."
+                text.fontColor = SKColor.white
+                text.position.x = CGFloat(0)
+                text.position.y = CGFloat(-160)
                 addChild(text)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     let game = GameScene(fileNamed: "GameScene")
                     game!.scaleMode = .aspectFill
+                    game!.gameMode = self.gameMode
                     let transition = SKTransition.fade(withDuration: 0.5)
                     self.view?.presentScene(game!,transition: transition)
                 }
-                
             }
             
         }
     }
-    
 }
