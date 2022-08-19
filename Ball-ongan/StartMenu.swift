@@ -17,7 +17,7 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
     private var background = SKSpriteNode(imageNamed: "background")
     private var title = SKSpriteNode(imageNamed: "Title")
     private var loading = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
-    
+    private var gameMode: String?
     override func didMove(to view: SKView) {
         
         background.zPosition = -1
@@ -57,29 +57,29 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: self)
             
             if location.y < 50 && location.y > -50 && location.x < 135 && location.x > 35 {
-                
-                loading.text = "loading..."
-                loading.fontColor = SKColor.white
-                loading.position.x = CGFloat(0)
-                loading.position.y = CGFloat(-100)
-                loading.zPosition = 120
-                addChild(loading)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    let game = GameScene(fileNamed: "GameScene")
-                    game!.scaleMode = .aspectFill
-                    let transition = SKTransition.fade(withDuration: 0.3)
-                    self.view?.presentScene(game!,transition: transition)
-                }
-                
+                playGame(mode: "timeattack")
             }
             
             if location.y < 50 && location.y > -50 && location.x > -135 && location.x < -35 {
-                
-                print("Survival mode")
-                
+                playGame(mode: "survival")
             }
             
+        }
+    }
+    func playGame( mode: String ){
+        loading.text = "loading..."
+        loading.fontColor = SKColor.white
+        loading.position.x = CGFloat(0)
+        loading.position.y = CGFloat(-100)
+        loading.zPosition = 120
+        addChild(loading)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            let game = GameScene(fileNamed: "GameScene")
+            game!.scaleMode = .aspectFill
+            game!.gameMode = mode
+            let transition = SKTransition.fade(withDuration: 0.3)
+            self.view?.presentScene(game!,transition: transition)
         }
     }
 }

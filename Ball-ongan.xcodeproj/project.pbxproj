@@ -15,6 +15,7 @@
 		936A56E5283A4F3100F769F1 /* IMFellDWPicaSC-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 936A56E4283A4F3000F769F1 /* IMFellDWPicaSC-Regular.ttf */; };
 		936A56E8283A556D00F769F1 /* TutorialScene1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936A56E7283A556D00F769F1 /* TutorialScene1.swift */; };
 		936A56EA283A569200F769F1 /* TutorialScene1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 936A56E9283A569200F769F1 /* TutorialScene1.sks */; };
+		93C91D3A28AE38E40037EFE6 /* SurvivalMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C91D3928AE38E40037EFE6 /* SurvivalMode.swift */; };
 		FAEA2BA9282A6DDF00ED6152 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA2BA8282A6DDF00ED6152 /* AppDelegate.swift */; };
 		FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */; };
 		FAEA2BAD282A6DDF00ED6152 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BAC282A6DDF00ED6152 /* Actions.sks */; };
@@ -35,6 +36,7 @@
 		936A56E6283A502400F769F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		936A56E7283A556D00F769F1 /* TutorialScene1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScene1.swift; sourceTree = "<group>"; };
 		936A56E9283A569200F769F1 /* TutorialScene1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TutorialScene1.sks; sourceTree = "<group>"; };
+		93C91D3928AE38E40037EFE6 /* SurvivalMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurvivalMode.swift; sourceTree = "<group>"; };
 		FAEA2BA5282A6DDF00ED6152 /* Ball-ongan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ball-ongan.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEA2BA8282A6DDF00ED6152 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				936A56E4283A4F3000F769F1 /* IMFellDWPicaSC-Regular.ttf */,
 				936A56E7283A556D00F769F1 /* TutorialScene1.swift */,
 				936A56E9283A569200F769F1 /* TutorialScene1.sks */,
+				93C91D3928AE38E40037EFE6 /* SurvivalMode.swift */,
 			);
 			path = "Ball-ongan";
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93C91D3A28AE38E40037EFE6 /* SurvivalMode.swift in Sources */,
 				FAEA2BAF282A6DDF00ED6152 /* GameScene.swift in Sources */,
 				934AAAF728379BAA008CAE64 /* StartMenu.swift in Sources */,
 				936A56E8283A556D00F769F1 /* TutorialScene1.swift in Sources */,

@@ -16,7 +16,9 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
     private var highScore = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var text = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var playAgain = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    private var modeText = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     var scoreVal : Int?
+    var gameMode : String?
     override func didMove(to view: SKView) {
         
         background.zPosition = -1
@@ -46,6 +48,12 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
         playAgain.fontSize = 20
         playAgain.text = "PLAY AGAIN"
         addChild(playAgain)
+        
+        modeText.position.y = -140
+        modeText.fontSize = 20
+        let gametext: String = String(gameMode!)
+        modeText.text = gametext
+        addChild(modeText)
         
         
         
@@ -82,6 +90,7 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     let game = GameScene(fileNamed: "GameScene")
                     game!.scaleMode = .aspectFill
+                    game!.gameMode = self.gameMode
                     let transition = SKTransition.fade(withDuration: 0.5)
                     self.view?.presentScene(game!,transition: transition)
                 }

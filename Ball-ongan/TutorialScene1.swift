@@ -12,15 +12,9 @@ import CoreMotion
 class TutorialScene1: SKScene, SKPhysicsContactDelegate {
     private var tutorialScene : SKSpriteNode!
     private var text = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    var gameMode: String?
     override func didMove(to view: SKView) {
-        
         setTutorial(count: 1)
-        
-        
-        
-        
-        
-        
     }
     func setTutorial(count:Int){
         tutorialScene = SKSpriteNode(imageNamed: "tutorial"+String(count))
@@ -43,6 +37,7 @@ class TutorialScene1: SKScene, SKPhysicsContactDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     let game = GameScene(fileNamed: "GameScene")
                     game!.scaleMode = .aspectFill
+                    game!.gameMode = self.gameMode
                     let transition = SKTransition.fade(withDuration: 0.5)
                     self.view?.presentScene(game!,transition: transition)
                 }
