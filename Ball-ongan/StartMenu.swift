@@ -58,10 +58,14 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
             
             if location.y < 50 && location.y > -50 && location.x < 135 && location.x > 35 {
                 playGame(mode: "timeattack")
+                let sound = SKAction.playSoundFileNamed("pickMode", waitForCompletion: false)
+                run(sound)
             }
             
             if location.y < 50 && location.y > -50 && location.x > -135 && location.x < -35 {
                 playGame(mode: "survival")
+                let sound = SKAction.playSoundFileNamed("pickMode", waitForCompletion: false)
+                run(sound)
             }
             
         }

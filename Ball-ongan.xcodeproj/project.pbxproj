@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55AB15FE28B37158006046D3 /* nextLevel.wav in Resources */ = {isa = PBXBuildFile; fileRef = 55AB15FA28B37157006046D3 /* nextLevel.wav */; };
+		55AB15FF28B37158006046D3 /* hitObstacle.wav in Resources */ = {isa = PBXBuildFile; fileRef = 55AB15FB28B37158006046D3 /* hitObstacle.wav */; };
+		55AB160028B37158006046D3 /* hitStar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 55AB15FC28B37158006046D3 /* hitStar.wav */; };
+		55AB160128B37158006046D3 /* pickMode.wav in Resources */ = {isa = PBXBuildFile; fileRef = 55AB15FD28B37158006046D3 /* pickMode.wav */; };
 		55E6546728AF2F9B00597DCE /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E6546628AF2F9B00597DCE /* Spark.sks */; };
 		55E6546B28AF332A00597DCE /* Blast.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E6546A28AF332A00597DCE /* Blast.sks */; };
 		93457CEF2838BA5D00DC00BE /* EndGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93457CEE2838BA5D00DC00BE /* EndGame.swift */; };
@@ -29,6 +33,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55AB15FA28B37157006046D3 /* nextLevel.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = nextLevel.wav; sourceTree = "<group>"; };
+		55AB15FB28B37158006046D3 /* hitObstacle.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitObstacle.wav; sourceTree = "<group>"; };
+		55AB15FC28B37158006046D3 /* hitStar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitStar.wav; sourceTree = "<group>"; };
+		55AB15FD28B37158006046D3 /* pickMode.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickMode.wav; sourceTree = "<group>"; };
 		55E6546628AF2F9B00597DCE /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
 		55E6546A28AF332A00597DCE /* Blast.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Blast.sks; sourceTree = "<group>"; };
 		93457CEE2838BA5D00DC00BE /* EndGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGame.swift; sourceTree = "<group>"; };
@@ -102,6 +110,10 @@
 				936A56E7283A556D00F769F1 /* TutorialScene1.swift */,
 				936A56E9283A569200F769F1 /* TutorialScene1.sks */,
 				93C91D3928AE38E40037EFE6 /* SurvivalMode.swift */,
+				55AB15FB28B37158006046D3 /* hitObstacle.wav */,
+				55AB15FC28B37158006046D3 /* hitStar.wav */,
+				55AB15FA28B37157006046D3 /* nextLevel.wav */,
+				55AB15FD28B37158006046D3 /* pickMode.wav */,
 			);
 			path = "Ball-ongan";
 			sourceTree = "<group>";
@@ -168,14 +180,18 @@
 				936A56E5283A4F3100F769F1 /* IMFellDWPicaSC-Regular.ttf in Resources */,
 				936A56EA283A569200F769F1 /* TutorialScene1.sks in Resources */,
 				93457CF12838BDF500DC00BE /* EndGame.sks in Resources */,
+				55AB160128B37158006046D3 /* pickMode.wav in Resources */,
 				FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */,
 				934AAAF928379E09008CAE64 /* StartMenu.sks in Resources */,
 				55E6546B28AF332A00597DCE /* Blast.sks in Resources */,
+				55AB15FE28B37158006046D3 /* nextLevel.wav in Resources */,
+				55AB160028B37158006046D3 /* hitStar.wav in Resources */,
 				FAEA2BB6282A6DE100ED6152 /* Assets.xcassets in Resources */,
 				FAEA2BB9282A6DE100ED6152 /* LaunchScreen.storyboard in Resources */,
 				55E6546728AF2F9B00597DCE /* Spark.sks in Resources */,
 				936A56E2283A3FCB00F769F1 /* music.wav in Resources */,
 				FAEA2BAD282A6DDF00ED6152 /* Actions.sks in Resources */,
+				55AB15FF28B37158006046D3 /* hitObstacle.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
