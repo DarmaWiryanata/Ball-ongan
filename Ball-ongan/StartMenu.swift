@@ -16,7 +16,7 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
     private var survival = SKSpriteNode(imageNamed: "survival")
     private var svText = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var background = SKSpriteNode(imageNamed: "background")
-    private var title = SKSpriteNode(imageNamed: "Title")
+    private var title = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var loading = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var gameMode: String?
     override func didMove(to view: SKView) {
@@ -53,8 +53,10 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
         svText.position.y = -85
         addChild(svText)
         
+        title.text = "Ball-ongan"
+        title.fontSize = 48
+        title.zPosition = 0
         title.position.y = 100
-        title.size = CGSize(width: 195,height: 39)
         addChild(title)
         
     }

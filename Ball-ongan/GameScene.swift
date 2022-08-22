@@ -31,18 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var score = 0 {
         didSet {
-            if gameMode == "timeattack"{
-                scoreLabel.text = "\(score) pts"
-            }
-            else if gameMode == "survival"{
-                Utility.shared.setScore(score: score)
-                let currentScore = Utility.shared.getScore()
-                if currentScore <= 0{
-                    scoreLabel.text = "\(score) pts"
-                }else{
-                scoreLabel.text = "\(String(currentScore)) pts"
-                }
-            }
+            scoreLabel.text = "\(score) pts"
         }
     }
     
@@ -112,7 +101,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
-        
+    
     // Accelerometer control
     let motionManager = CMMotionManager()
     var xAcceleration:CGFloat = 0
@@ -144,11 +133,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 scoreLabel.fontColor = SKColor.white
                 addChild(scoreLabel)
                 score = 0
-                
+
                 // Add Timer
                 timerNode.zPosition =  2
-                // timerNode.position.x = CGFloat(Int(frame.minY) + 950)
-                timerNode.position.x = CGFloat(Int(frame.minY) + 400)
                 timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
                 timerNode.fontColor = SKColor.white
                 addChild(timerNode)
@@ -667,11 +654,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func endGame() {
         music.removeFromParent()
+        let endGame = EndGame(fileNamed: "EndGame")
         if gameMode == "survival"{
             Utility.shared.restartScore()
             Utility.shared.restartLevel()
+            endGame?.levelVal = level
         }
-        let endGame = EndGame(fileNamed: "EndGame")
         endGame?.scoreVal = score
         endGame?.gameMode = gameMode
         endGame!.scaleMode = .aspectFill

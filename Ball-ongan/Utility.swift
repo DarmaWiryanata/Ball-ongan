@@ -19,6 +19,18 @@ class Utility{
             
         }
     }
+    func setHighLevel( level: Int) -> Void{
+        let currentLevel = level
+        let level  = UserDefaults.standard.integer(forKey: "highLevel")
+
+        if(currentLevel > level){
+            UserDefaults.standard.set(currentLevel, forKey: "highLevel")
+            
+        }
+    }
+    func getHighLevel() -> Int {
+        return UserDefaults.standard.integer(forKey: "highLevel")
+    }
     func restartLevel() -> Void{
         UserDefaults.standard.set(1, forKey: "level")
     }
