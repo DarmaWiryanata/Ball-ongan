@@ -69,28 +69,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
     }
-  
-    let motionManager = CMMotionManager()
-    var xAcceleration:CGFloat = 0
-    var yAcceleration:CGFloat = 0
     
     private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
     
+    var touchControl = true
+    
+    // Accelerometer control
+    let motionManager = CMMotionManager()
+    var xAcceleration:CGFloat = 0
+    var yAcceleration:CGFloat = 0
+    
+    // Touch control
+    let joystick = SKSpriteNode(imageNamed: "jSubstrate")
+    let knob = SKSpriteNode(imageNamed: "jStick")
+    var joystickIsActivated = false
     
     override func didMove(to view: SKView) {
-        // First launch
-        
         if Firstimer.shared.isNewUser() {
+            // First launch
             Firstimer.shared.isNotNewuser()
             let tutorial = TutorialScene1(fileNamed: "TutorialScene1")
             tutorial!.scaleMode = .aspectFill
             tutorial!.gameMode = self.gameMode
             let transition = SKTransition.fade(withDuration: 0.3)
             self.view?.presentScene(tutorial!,transition: transition)
-        }else{
-        // Add Timer
-            if gameMode == "timeattack"{
+        } else {
+            if gameMode == "timeattack" {
+                // Add Timer
                 timerNode.zPosition =  2
                 timerNode.position.x = CGFloat(Int(frame.minY) + 950)
                 timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
@@ -98,29 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(timerNode)
                 time = 120
                 run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
-              
-                // Add Score
-                scoreLabel.zPosition = 10
-                scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
-                scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
-                scoreLabel.fontColor = SKColor.white
-                addChild(scoreLabel)
-                score = 0
-                
-                background.zPosition = -1
-                background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
-                addChild(background)
-                
-                addChild(music)
-                
-                physicsWorld.contactDelegate = self
-                
-                createPlayer()
-                motionManager.startAccelerometerUpdates()
-                createPoint()
-                createObstacle()
-            }
-            else if gameMode == "survival"{
+            } else if gameMode == "survival" {
                 // Add level
                 if level == 0 {
                     level += 1
@@ -132,28 +116,104 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 levelNode.position.y = CGFloat(Int(frame.maxX) - 240)
                 levelNode.fontColor = SKColor.white
                 addChild(levelNode)
-                // Add Score
-                scoreLabel.zPosition = 10
-                scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
-                scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
-                scoreLabel.fontColor = SKColor.white
-                addChild(scoreLabel)
-                score = 0
-                
-                background.zPosition = -1
-                background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
-                addChild(background)
-                
-                addChild(music)
-                
-                physicsWorld.contactDelegate = self
-                
-                createPlayer()
+            }
+          
+            // Add Score
+            scoreLabel.zPosition = 10
+            scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
+            scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
+            scoreLabel.fontColor = SKColor.white
+            addChild(scoreLabel)
+            score = 0
+            
+            background.zPosition = -1
+            background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
+            addChild(background)
+            
+            addChild(music)
+            
+            physicsWorld.contactDelegate = self
+            
+            createPlayer()
+            createPoint()
+            createObstacle()
+            
+            if !touchControl {
+                // Accelerometer control
                 motionManager.startAccelerometerUpdates()
-                createPoint()
-                createObstacle()
+            } else {
+                // Touch control
+                self.addChild(joystick)
+                joystick.position = CGPoint(x: -275, y: -110)
+                
+                self.addChild(knob)
+                knob.position = joystick.position
+                
+                joystick.alpha = 0.4
+                knob.alpha = 0.4
             }
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in: self)
+            
+            joystickIsActivated = knob.frame.contains(location) ? true : false
+        }
+    }
+    
+    var normalizedPoint = CGPoint()
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let location = touch.location(in: self)
+            
+            guard joystickIsActivated else { return }
+            
+            let v = CGVector(dx: location.x - joystick.position.x, dy: location.y - joystick.position.y)
+            let angle = atan2(v.dy, v.dx)
+            
+            let deg = angle * CGFloat(180 / Double.pi)
+            
+            let length: CGFloat = joystick.frame.size.height / 2
+            
+            // Revert knob position
+            let xDist: CGFloat = sin(angle - 1.57079633) * length
+            let yDist: CGFloat = cos(angle - 1.57079633) * length
+            
+            if joystick.frame.contains(location) {
+                knob.position = location
+            } else {
+                knob.position = CGPoint(x: joystick.position.x - xDist, y: joystick.position.y + yDist)
+            }
+            
+            // Move player
+            player.zRotation = angle - 1.57079633
+            
+            normalizedPoint = CGPoint(x: v.dx/length, y: v.dy/length)
+            
+            let speed = 5.0
+            player.position.x += (normalizedPoint.x * speed)
+            player.position.y += (normalizedPoint.y * speed)
+            
+            player.physicsBody?.velocity = v
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard joystickIsActivated else { return }
+        
+        let move: SKAction = SKAction.move(to: joystick.position, duration: 0.1)
+        move.timingMode = .easeOut
+        
+        let speed = 5.0
+        player.position.x += (normalizedPoint.x * speed)
+        player.position.y += (normalizedPoint.y * speed)
+        
+        knob.run(move)
+        
+        player.physicsBody?.velocity = CGVector()
     }
   
     func createPlayer() {
@@ -442,9 +502,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if !clockwise {
             rotationFactor *= -1
         }
-        
-        print(divider)
-        print(glow)
 
         for i in 0...divider-1 {
             let section = SKShapeNode(path: path.cgPath)
