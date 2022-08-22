@@ -129,6 +129,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    var normalizedPoint = CGPoint()
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
@@ -155,11 +157,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Move player
             player.zRotation = angle - 1.57079633
             
-            let normalizedPoint = CGPoint(x: v.dx/length, y: v.dy/length)
+            normalizedPoint = CGPoint(x: v.dx/length, y: v.dy/length)
             
             let speed = 5.0
             player.position.x += (normalizedPoint.x * speed)
             player.position.y += (normalizedPoint.y * speed)
+            
+            player.physicsBody?.velocity = v
         }
     }
     
@@ -169,7 +173,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let move: SKAction = SKAction.move(to: joystick.position, duration: 0.1)
         move.timingMode = .easeOut
         
+        let speed = 5.0
+        player.position.x += (normalizedPoint.x * speed)
+        player.position.y += (normalizedPoint.y * speed)
+        
         knob.run(move)
+        
+        player.physicsBody?.velocity = CGVector()
     }
   
     func createPlayer() {
@@ -445,9 +455,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if !clockwise {
             rotationFactor *= -1
         }
-        
-        print(divider)
-        print(glow)
 
         for i in 0...divider-1 {
             let section = SKShapeNode(path: path.cgPath)
