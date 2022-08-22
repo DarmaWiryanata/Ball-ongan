@@ -15,10 +15,13 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
     private var background = SKSpriteNode(imageNamed: "background")
     private var score = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var highScore = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    private var level = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    private var highLevel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var text = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var playAgain = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var home = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var modeText = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    var levelVal : Int?
     var scoreVal : Int?
     var gameMode : String?
     override func didMove(to view: SKView) {
@@ -39,19 +42,38 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
         homeButton.size = CGSize(width: 100, height: 100)
         addChild(homeButton)
         
+        if gameMode == "timeattack"{
+            let highScoreVal  = highScore(score: scoreVal!)
+            highScore.position.y = 67
+            highScore.fontSize = 18
+            highScore.text = "high Score : \(highScoreVal) pts"
+            addChild(highScore)
+            
+            
+            score.position.y = 100
+            score.fontSize = 40
+            let scoreText : String = String(scoreVal!)
+            score.text = "your score : \(scoreText) pts"
+            addChild(score)
+        }else if gameMode == "survival"{
+            var highLevelVal = Utility.shared.getHighLevel()
+            if highLevelVal == 0{
+                Utility.shared.setHighLevel(level: levelVal!)
+                highLevelVal = Utility.shared.getHighLevel()
+            }
+            highLevel.position.y = 67
+            highLevel.fontSize = 18
+            highLevel.text = "high level : \(highLevelVal)"
+            addChild(highLevel)
+            
+            
+            level.position.y = 100
+            level.fontSize = 40
+            let levelText : String = String(levelVal!)
+            level.text = "your latest level : \(levelText)"
+            addChild(level)
+        }
         
-        let highScoreVal  = highScore(score: scoreVal!)
-        highScore.position.y = 67
-        highScore.fontSize = 18
-        highScore.text = "high Score : \(highScoreVal) pts"
-        addChild(highScore)
-        
-        
-        score.position.y = 100
-        score.fontSize = 40
-        let scoreText : String = String(scoreVal!)
-        score.text = "your score : \(scoreText) pts"
-        addChild(score)
         
         playAgain.position.y = -100
         playAgain.position.x = 85
@@ -88,6 +110,7 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
         
         return gethighScoreNow
     }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {

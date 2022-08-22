@@ -20,18 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var stagePoint = 0
     private var score = 0 {
         didSet {
-            if gameMode == "timeattack"{
-                scoreLabel.text = "\(score) pts"
-            }
-            else if gameMode == "survival"{
-                Utility.shared.setScore(score: score)
-                let currentScore = Utility.shared.getScore()
-                if currentScore <= 0{
-                    scoreLabel.text = "\(score) pts"
-                }else{
-                scoreLabel.text = "\(String(currentScore)) pts"
-                }
-            }
+            scoreLabel.text = "\(score) pts"
         }
     }
     var gameMode : String?
@@ -94,9 +83,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.view?.presentScene(tutorial!,transition: transition)
         } else {
             if gameMode == "timeattack" {
+                // Add Score
+                scoreLabel.zPosition = 10
+                scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
+                scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
+                scoreLabel.fontColor = SKColor.white
+                addChild(scoreLabel)
+                score = 0
                 // Add Timer
                 timerNode.zPosition =  2
-                timerNode.position.x = CGFloat(Int(frame.minY) + 950)
                 timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
                 timerNode.fontColor = SKColor.white
                 addChild(timerNode)
@@ -116,13 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(levelNode)
             }
           
-            // Add Score
-            scoreLabel.zPosition = 10
-            scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
-            scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
-            scoreLabel.fontColor = SKColor.white
-            addChild(scoreLabel)
-            score = 0
+            
             
             background.zPosition = -1
             background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
@@ -519,11 +508,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func endGame() {
         music.removeFromParent()
+        let endGame = EndGame(fileNamed: "EndGame")
         if gameMode == "survival"{
             Utility.shared.restartScore()
             Utility.shared.restartLevel()
+            endGame?.levelVal = level
         }
-        let endGame = EndGame(fileNamed: "EndGame")
         endGame?.scoreVal = score
         endGame?.gameMode = gameMode
         endGame!.scaleMode = .aspectFill
