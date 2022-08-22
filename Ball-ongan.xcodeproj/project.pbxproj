@@ -21,7 +21,9 @@
 		936A56E5283A4F3100F769F1 /* IMFellDWPicaSC-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 936A56E4283A4F3000F769F1 /* IMFellDWPicaSC-Regular.ttf */; };
 		936A56E8283A556D00F769F1 /* TutorialScene1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936A56E7283A556D00F769F1 /* TutorialScene1.swift */; };
 		936A56EA283A569200F769F1 /* TutorialScene1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 936A56E9283A569200F769F1 /* TutorialScene1.sks */; };
-		93C91D3A28AE38E40037EFE6 /* SurvivalMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C91D3928AE38E40037EFE6 /* SurvivalMode.swift */; };
+		93C91D3A28AE38E40037EFE6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C91D3928AE38E40037EFE6 /* Utility.swift */; };
+		93D1CAF528B378F100E0EA94 /* ControlMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 93D1CAF428B378F100E0EA94 /* ControlMenu.sks */; };
+		93D1CAF728B37DDE00E0EA94 /* ControlMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D1CAF628B37DDE00E0EA94 /* ControlMenu.swift */; };
 		FAEA2BA9282A6DDF00ED6152 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA2BA8282A6DDF00ED6152 /* AppDelegate.swift */; };
 		FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */; };
 		FAEA2BAD282A6DDF00ED6152 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BAC282A6DDF00ED6152 /* Actions.sks */; };
@@ -48,7 +50,9 @@
 		936A56E6283A502400F769F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		936A56E7283A556D00F769F1 /* TutorialScene1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScene1.swift; sourceTree = "<group>"; };
 		936A56E9283A569200F769F1 /* TutorialScene1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TutorialScene1.sks; sourceTree = "<group>"; };
-		93C91D3928AE38E40037EFE6 /* SurvivalMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurvivalMode.swift; sourceTree = "<group>"; };
+		93C91D3928AE38E40037EFE6 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		93D1CAF428B378F100E0EA94 /* ControlMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ControlMenu.sks; sourceTree = "<group>"; };
+		93D1CAF628B37DDE00E0EA94 /* ControlMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMenu.swift; sourceTree = "<group>"; };
 		FAEA2BA5282A6DDF00ED6152 /* Ball-ongan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ball-ongan.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEA2BA8282A6DDF00ED6152 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAEA2BAA282A6DDF00ED6152 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -114,6 +118,9 @@
 				55AB15FC28B37158006046D3 /* hitStar.wav */,
 				55AB15FA28B37157006046D3 /* nextLevel.wav */,
 				55AB15FD28B37158006046D3 /* pickMode.wav */,
+				93C91D3928AE38E40037EFE6 /* Utility.swift */,
+				93D1CAF428B378F100E0EA94 /* ControlMenu.sks */,
+				93D1CAF628B37DDE00E0EA94 /* ControlMenu.swift */,
 			);
 			path = "Ball-ongan";
 			sourceTree = "<group>";
@@ -182,6 +189,7 @@
 				93457CF12838BDF500DC00BE /* EndGame.sks in Resources */,
 				55AB160128B37158006046D3 /* pickMode.wav in Resources */,
 				FAEA2BAB282A6DDF00ED6152 /* GameScene.sks in Resources */,
+				93D1CAF528B378F100E0EA94 /* ControlMenu.sks in Resources */,
 				934AAAF928379E09008CAE64 /* StartMenu.sks in Resources */,
 				55E6546B28AF332A00597DCE /* Blast.sks in Resources */,
 				55AB15FE28B37158006046D3 /* nextLevel.wav in Resources */,
@@ -202,8 +210,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93C91D3A28AE38E40037EFE6 /* SurvivalMode.swift in Sources */,
+				93C91D3A28AE38E40037EFE6 /* Utility.swift in Sources */,
 				FAEA2BAF282A6DDF00ED6152 /* GameScene.swift in Sources */,
+				93D1CAF728B37DDE00E0EA94 /* ControlMenu.swift in Sources */,
 				934AAAF728379BAA008CAE64 /* StartMenu.swift in Sources */,
 				936A56E8283A556D00F769F1 /* TutorialScene1.swift in Sources */,
 				FAEA2BB1282A6DDF00ED6152 /* GameViewController.swift in Sources */,
@@ -355,7 +364,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Y26BLZ69B8;
+				DEVELOPMENT_TEAM = 6PDVJXGB2J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Ball-ongan/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -386,7 +395,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Y26BLZ69B8;
+				DEVELOPMENT_TEAM = 6PDVJXGB2J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Ball-ongan/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

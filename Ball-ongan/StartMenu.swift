@@ -11,6 +11,7 @@ import CoreMotion
 
 class StartMenu: SKScene, SKPhysicsContactDelegate {
     private var timeAttack = SKSpriteNode(imageNamed: "timeattack")
+    private var control = SKSpriteNode(imageNamed: "control")
     private var taText = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var survival = SKSpriteNode(imageNamed: "survival")
     private var svText = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
@@ -23,6 +24,12 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
         background.zPosition = -1
         background.size = CGSize(width: frame.maxY * 1.2, height: frame.maxX)
         addChild(background)
+        
+        control.zPosition = 1
+        control.position.x = frame.maxY/2
+        control.position.y = (frame.maxX/(-2))+50
+        control.size = CGSize(width: 45, height: 45)
+        addChild(control)
         
         timeAttack.zPosition = 0
         timeAttack.position.x = 85
@@ -54,18 +61,21 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             
-            let location = touch.location(in: self)
-            
-            if location.y < 50 && location.y > -50 && location.x < 135 && location.x > 35 {
+            let timeAttack = touch.location(in: self.timeAttack)
+            let survival = touch.location(in: self.survival)
+            let control = touch.location(in: self.control)
+            if timeAttack.y < 50 && timeAttack.y > -50 && timeAttack.x < 50 && timeAttack.x > -50 {
                 playGame(mode: "timeattack")
                 let sound = SKAction.playSoundFileNamed("pickMode", waitForCompletion: false)
                 run(sound)
             }
-            
-            if location.y < 50 && location.y > -50 && location.x > -135 && location.x < -35 {
+            if survival.y < 50 && survival.y > -50 && survival.x > -50 && survival.x < 50 {
                 playGame(mode: "survival")
                 let sound = SKAction.playSoundFileNamed("pickMode", waitForCompletion: false)
                 run(sound)
+            }
+            if control.y < 25 && control.y > -25 && control.x > -25 && control.x < 25{
+                changeControl()
             }
             
         }
@@ -82,6 +92,21 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
             let game = GameScene(fileNamed: "GameScene")
             game!.scaleMode = .aspectFill
             game!.gameMode = mode
+            let transition = SKTransition.fade(withDuration: 0.3)
+            self.view?.presentScene(game!,transition: transition)
+        }
+    }
+    func changeControl(){
+        loading.text = "loading..."
+        loading.fontColor = SKColor.white
+        loading.position.x = CGFloat(0)
+        loading.position.y = CGFloat(-120)
+        loading.zPosition = 120
+        addChild(loading)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            let game = ControlMenu(fileNamed: "ControlMenu")
+            game!.scaleMode = .aspectFill
             let transition = SKTransition.fade(withDuration: 0.3)
             self.view?.presentScene(game!,transition: transition)
         }
