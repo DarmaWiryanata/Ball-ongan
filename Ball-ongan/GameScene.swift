@@ -73,8 +73,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
     
-    var touchControl = true
-    
     // Accelerometer control
     let motionManager = CMMotionManager()
     var xAcceleration:CGFloat = 0
