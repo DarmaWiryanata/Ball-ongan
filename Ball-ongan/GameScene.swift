@@ -8,16 +8,27 @@
 import SpriteKit
 import GameplayKit
 import CoreMotion
+import Foundation
+import AudioToolbox
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var player = SKSpriteNode(imageNamed: "player")
     public var background = SKSpriteNode(imageNamed: "background")
     private var music = SKAudioNode(fileNamed: "music.wav")
+    
+    //Pause Node
+    private var pauseBtn = SKSpriteNode()
+    private var continueBtn = SKSpriteNode()
+    private var homeBtn = SKSpriteNode()
+    private var restartBtn = SKSpriteNode()
+    private var pauseBG = SKSpriteNode()
+    
     private var touchControl = Utility.shared.getControl()
     private var scoreLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var stageScore = 0
     private var stagePoint = 0
+    
     private var score = 0 {
         didSet {
             if gameMode == "timeattack"{
@@ -34,6 +45,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
     var gameMode : String?
     private var timerNode = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var levelNode = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
@@ -58,6 +70,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+    }
+    
+    private func pauseButton() -> SKSpriteNode {
+        let image = UIImage(systemName: "pause.circle.fill")!.withTintColor(.white)
+
+        let data = image.pngData()!
+        let newImage = UIImage(data:data)
+        let texture = SKTexture(image: newImage!)
+        pauseBtn = SKSpriteNode(texture: texture,size: CGSize(width: 32, height: 32))
+        pauseBtn.zPosition = 2
+        pauseBtn.position.x = CGFloat(Int(frame.minY) + 1000)
+        pauseBtn.position.y = CGFloat(Int(frame.maxX) - 230)
+        
+        return pauseBtn
+    }
+    
+    private func pauseSymbolToSprite(symbol : String, xPos : CGFloat) -> SKSpriteNode {
+        let image = UIImage(systemName: symbol)!.withTintColor(.white)
+
+        let data = image.pngData()!
+        let newImage = UIImage(data:data)
+        let texture = SKTexture(image: newImage!)
+        let sprite = SKSpriteNode(texture: texture,size: CGSize(width: 70, height: 70))
+        sprite.zPosition = 101
+        sprite.position.y = -10
+        sprite.position.x = xPos
+        
+        return sprite
     }
   
     private func countdown() -> Void {
@@ -94,11 +134,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             tutorial!.gameMode = self.gameMode
             let transition = SKTransition.fade(withDuration: 0.3)
             self.view?.presentScene(tutorial!,transition: transition)
-        } else {
+        } else {    
+            // Pause button
+            addChild(pauseButton())
+                
             if gameMode == "timeattack" {
                 // Add Timer
                 timerNode.zPosition =  2
-                timerNode.position.x = CGFloat(Int(frame.minY) + 950)
+                // timerNode.position.x = CGFloat(Int(frame.minY) + 950)
+                timerNode.position.x = CGFloat(Int(frame.minY) + 400)
                 timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
                 timerNode.fontColor = SKColor.white
                 addChild(timerNode)
@@ -112,7 +156,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 levelNode.text = String(level)
                 levelNode.zPosition =  2
-                levelNode.position.x = CGFloat(Int(frame.minY) + 950)
+                // levelNode.position.x = CGFloat(Int(frame.minY) + 950)
+                // levelNode.position.y = CGFloat(Int(frame.maxX) - 240)
+                levelNode.position.x = CGFloat(Int(frame.minY) + 342)
                 levelNode.position.y = CGFloat(Int(frame.maxX) - 240)
                 levelNode.fontColor = SKColor.white
                 addChild(levelNode)
@@ -153,6 +199,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 knob.alpha = 0.4
             }
         }
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -266,6 +313,90 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
 
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // this method is called when the user touches the screen
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let tappedNodes = nodes(at: location)
+        
+        if tappedNodes.contains(pauseBtn) {
+            isPaused = true
+            
+            pauseBG = SKSpriteNode(imageNamed: "Rectangle.png")
+            pauseBG.zPosition = 100
+            pauseBG.size = CGSize(width: frame.maxY * 1.2, height: frame.maxX)
+            addChild(pauseBG)
+            
+            //Continue Button
+            let imageCon = UIImage(systemName: "play.circle.fill")!.withTintColor(.white)
+            let dataCon = imageCon.pngData()!
+            let newImageCon = UIImage(data:dataCon)
+            let textureCon = SKTexture(image: newImageCon!)
+            continueBtn = SKSpriteNode(texture: textureCon,size: CGSize(width: 80, height: 80))
+            continueBtn.zPosition = 101
+            continueBtn.position.y = 0
+            continueBtn.position.x = 0
+            
+            addChild(continueBtn)
+            
+            //Home button
+            let imageHome = UIImage(systemName: "house.circle.fill")!.withTintColor(.white)
+            let dataHome = imageHome.pngData()!
+            let newImageHome = UIImage(data:dataHome)
+            let textureHome = SKTexture(image: newImageHome!)
+            homeBtn = SKSpriteNode(texture: textureHome,size: CGSize(width: 80, height: 80))
+            homeBtn.zPosition = 101
+            homeBtn.position.y = 0
+            homeBtn.position.x = -120
+
+            addChild(homeBtn)
+
+            //restart button
+            let imageRes = UIImage(systemName: "arrow.counterclockwise.circle.fill")!.withTintColor(.white)
+            let dataRes = imageRes.pngData()!
+            let newImageRes = UIImage(data:dataRes)
+            let textureRes = SKTexture(image: newImageRes!)
+            restartBtn = SKSpriteNode(texture: textureRes,size: CGSize(width: 80, height: 80))
+            restartBtn.zPosition = 101
+            restartBtn.position.y = 0
+            restartBtn.position.x = 120
+
+            addChild(restartBtn)
+        }
+        
+        //if continue button is pressed
+        if tappedNodes.contains(continueBtn) {
+            print("been here!")
+            continueBtn.removeFromParent()
+            restartBtn.removeFromParent()
+            homeBtn.removeFromParent()
+            pauseBG.removeFromParent()
+            isPaused = false
+          
+        //if home button is pressed
+        } else if tappedNodes.contains(homeBtn){
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                let scene = StartMenu(fileNamed: "StartMenu")
+                scene!.scaleMode = .aspectFill
+                let transition = SKTransition.fade(withDuration: 0.5)
+                self.view?.presentScene(scene!,transition: transition)
+            }
+           
+        //if restart button is pressed
+        } else if tappedNodes.contains(restartBtn){
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                let game = GameScene(fileNamed: "GameScene")
+                game!.scaleMode = .aspectFill
+                game!.gameMode = self.gameMode
+                let transition = SKTransition.fade(withDuration: 0.5)
+                self.view?.presentScene(game!,transition: transition)
+            }
+        }
+        
+        
+    }
+    
 
     enum playerPosition: Int {
     case minX = -160
@@ -377,11 +508,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func playerHit(_ node: SKNode) {
-
+        
         switch node.name {
         case "point":
             playerHitPoint()
         case "obstacle":
+            
+            //TODO: feedback when hitting the node
+            if let particles = SKEmitterNode(fileNamed: "Blast.sks"){
+                particles.position = player.position
+                particles.zPosition = 3
+                addChild(particles)
+                
+                //Haptic feedback when hitting a node
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                
+            }
+            
+            //TODO: Sound buat obstacle
+            let sound = SKAction.playSoundFileNamed("hitObstacle", waitForCompletion: false)
+            run(sound)
+            
             if gameMode == "timeattack"{
                 time -= 10
             }
@@ -399,7 +546,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func playerHitPoint() {
         
+        let sound = SKAction.playSoundFileNamed("hitStar", waitForCompletion: false)
+        run(sound)
+        
         stageScore += 1
+        if let particles = SKEmitterNode(fileNamed: "Spark.sks"){
+            particles.position = player.position
+            particles.zPosition = 3
+            addChild(particles)
+        }
         
         // Remove point & children nodes
         for c in children {
@@ -413,6 +568,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func nextStage() {
+        
+        let sound = SKAction.playSoundFileNamed("nextLevel", waitForCompletion: false)
+        run(sound)
         
         // Store score to next stage
         if stageScore == stagePoint {
@@ -482,12 +640,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         section.strokeColor = color
         section.zPosition = 0
         section.name = "goal"
-        
-//        section.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-//        section.physicsBody?.affectedByGravity = false
-//        section.physicsBody?.contactTestBitMask = 1
-//        section.physicsBody?.categoryBitMask = 0
-//        section.physicsBody?.collisionBitMask = 0
         
         addChild(section)
         
