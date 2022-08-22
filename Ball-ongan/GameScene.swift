@@ -20,23 +20,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var stagePoint = 0
     private var score = 0 {
         didSet {
-            scoreLabel.text = "\(score) pts"
+            if gameMode == "timeattack"{
+                scoreLabel.text = "\(score) pts"
+            }
+            else if gameMode == "survival"{
+                SurvivalMode.shared.setScore(score: score)
+                let currentScore = SurvivalMode.shared.getScore()
+                if currentScore <= 0{
+                    scoreLabel.text = "\(score) pts"
+                }else{
+                scoreLabel.text = "\(String(currentScore)) pts"
+                }
+            }
         }
     }
-  
+    var gameMode : String?
     private var timerNode = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+    private var levelNode = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var minute: Int = 0
     private var second: Int = 60
+    private var level: Int = UserDefaults.standard.integer(forKey: "level") {
+        didSet{
+            levelNode.text = String(level)
+        }
+    }
     private var time: Int = 21 {
         didSet {
-            if time <= 120 && time % 60 < 10 {
-                timerNode.text = "0\(time / 60 % 60) : 0\(time % 60)"
-            } else if time <= 120 && time > 60 {
-                timerNode.text = "0\(time / 60 % 60) : \(time % 60)"
-            } else if time < 10 {
-                timerNode.text = "00 : 0\(time)"
-            } else if time <= 60 {
-                timerNode.text = "00 : \(time)"
+            if time >= 0{
+                if time <= 120 && time % 60 < 10 {
+                    timerNode.text = "0\(time / 60 % 60) : 0\(time % 60)"
+                } else if time <= 120 && time > 60 {
+                    timerNode.text = "0\(time / 60 % 60) : \(time % 60)"
+                } else if time < 10 {
+                    timerNode.text = "00 : 0\(time)"
+                } else if time <= 60 {
+                    timerNode.text = "00 : \(time)"
+                }
             }
         }
     }
@@ -72,17 +91,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             Firstimer.shared.isNotNewuser()
             let tutorial = TutorialScene1(fileNamed: "TutorialScene1")
             tutorial!.scaleMode = .aspectFill
+            tutorial!.gameMode = self.gameMode
             let transition = SKTransition.fade(withDuration: 0.3)
             self.view?.presentScene(tutorial!,transition: transition)
         } else {
-            // Add Timer
-            timerNode.zPosition =  2
-            timerNode.position.x = CGFloat(Int(frame.minY) + 950)
-            timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
-            timerNode.fontColor = SKColor.white
-            addChild(timerNode)
-            time = 120
-            run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
+            if gameMode == "timeattack" {
+                // Add Timer
+                timerNode.zPosition =  2
+                timerNode.position.x = CGFloat(Int(frame.minY) + 950)
+                timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
+                timerNode.fontColor = SKColor.white
+                addChild(timerNode)
+                time = 120
+                run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
+            } else if gameMode == "survival" {
+                // Add level
+                if level == 0 {
+                    level += 1
+                    SurvivalMode.shared.setLevel(level: level)
+                }
+                levelNode.text = String(level)
+                levelNode.zPosition =  2
+                levelNode.position.x = CGFloat(Int(frame.minY) + 950)
+                levelNode.position.y = CGFloat(Int(frame.maxX) - 240)
+                levelNode.fontColor = SKColor.white
+                addChild(levelNode)
+            }
           
             // Add Score
             scoreLabel.zPosition = 10
@@ -348,7 +382,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case "point":
             playerHitPoint()
         case "obstacle":
-            time -= 10
+            if gameMode == "timeattack"{
+                time -= 10
+            }
+            else if gameMode == "survival"{
+                endGame()
+            }
+            
         default:
             print("empty node")
         }
@@ -376,7 +416,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Store score to next stage
         if stageScore == stagePoint {
-            score += stageScore
+            if gameMode == "timeattack"{
+                score += stageScore
+            }
+            else if gameMode == "survival"{
+                score += stageScore
+                level += 1
+                SurvivalMode.shared.setLevel(level: level)
+            }
         }
         stageScore = 0
         stagePoint = 0
@@ -474,9 +521,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func endGame() {
         music.removeFromParent()
-        
+        if gameMode == "survival"{
+            SurvivalMode.shared.restartScore()
+            SurvivalMode.shared.restartLevel()
+        }
         let endGame = EndGame(fileNamed: "EndGame")
         endGame?.scoreVal = score
+        endGame?.gameMode = gameMode
         endGame!.scaleMode = .aspectFill
         let transition = SKTransition.fade(withDuration: 0.3)
         self.view?.presentScene(endGame!,transition: transition)
