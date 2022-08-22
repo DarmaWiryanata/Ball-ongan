@@ -14,7 +14,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var player = SKSpriteNode(imageNamed: "player")
     public var background = SKSpriteNode(imageNamed: "background")
     private var music = SKAudioNode(fileNamed: "music.wav")
-  
+    private var touchControl = Utility.shared.getControl()
     private var scoreLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var stageScore = 0
     private var stagePoint = 0
@@ -24,8 +24,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 scoreLabel.text = "\(score) pts"
             }
             else if gameMode == "survival"{
-                SurvivalMode.shared.setScore(score: score)
-                let currentScore = SurvivalMode.shared.getScore()
+                Utility.shared.setScore(score: score)
+                let currentScore = Utility.shared.getScore()
                 if currentScore <= 0{
                     scoreLabel.text = "\(score) pts"
                 }else{
@@ -124,7 +124,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 // Add level
                 if level == 0 {
                     level += 1
-                    SurvivalMode.shared.setLevel(level: level)
+                    Utility.shared.setLevel(level: level)
                 }
                 levelNode.text = String(level)
                 levelNode.zPosition =  2
@@ -362,7 +362,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             else if gameMode == "survival"{
                 score += stageScore
                 level += 1
-                SurvivalMode.shared.setLevel(level: level)
+                Utility.shared.setLevel(level: level)
             }
         }
         stageScore = 0
@@ -465,8 +465,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func endGame() {
         music.removeFromParent()
         if gameMode == "survival"{
-            SurvivalMode.shared.restartScore()
-            SurvivalMode.shared.restartLevel()
+            Utility.shared.restartScore()
+            Utility.shared.restartLevel()
         }
         let endGame = EndGame(fileNamed: "EndGame")
         endGame?.scoreVal = score

@@ -7,8 +7,8 @@
 
 import Foundation
 
-class SurvivalMode{
-    static let shared = SurvivalMode()
+class Utility{
+    static let shared = Utility()
     
     func setLevel( level: Int) -> Void{
         let currentLevel = level
@@ -33,5 +33,11 @@ class SurvivalMode{
     }
     func restartScore() -> Void{
         UserDefaults.standard.set(0, forKey: "survivalScore")
+    }
+    func setControl( control: Bool ) -> Void{
+        UserDefaults.standard.set(control, forKey: "control")
+    }
+    func getControl() -> Bool{
+        return UserDefaults.standard.bool(forKey: "control")
     }
 }

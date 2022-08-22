@@ -25,7 +25,7 @@ class TutorialScene1: SKScene, SKPhysicsContactDelegate {
     private var count = 1
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        for touch in touches {
+        for _ in touches {
             if count == 6{
                 text.text = "loading..."
                 text.fontColor = SKColor.white
@@ -35,9 +35,8 @@ class TutorialScene1: SKScene, SKPhysicsContactDelegate {
                 addChild(text)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    let game = GameScene(fileNamed: "GameScene")
+                    let game = ControlMenu(fileNamed: "ControlMenu")
                     game!.scaleMode = .aspectFill
-                    game!.gameMode = self.gameMode
                     let transition = SKTransition.fade(withDuration: 0.5)
                     self.view?.presentScene(game!,transition: transition)
                 }
