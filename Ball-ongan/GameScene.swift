@@ -53,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var second: Int = 60
     private var level: Int = UserDefaults.standard.integer(forKey: "level") {
         didSet{
-            levelNode.text = String(level)
+            levelNode.text = String("level \(level)")
         }
     }
     private var time: Int = 21 {
@@ -112,9 +112,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
-    
-    var touchControl = true
-    
+        
     // Accelerometer control
     let motionManager = CMMotionManager()
     var xAcceleration:CGFloat = 0
@@ -139,6 +137,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(pauseButton())
                 
             if gameMode == "timeattack" {
+                // Add Score
+                scoreLabel.zPosition = 10
+                scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
+                scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
+                scoreLabel.fontColor = SKColor.white
+                addChild(scoreLabel)
+                score = 0
+                
                 // Add Timer
                 timerNode.zPosition =  2
                 // timerNode.position.x = CGFloat(Int(frame.minY) + 950)
@@ -154,7 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     level += 1
                     Utility.shared.setLevel(level: level)
                 }
-                levelNode.text = String(level)
+                levelNode.text = String("level \(level)")
                 levelNode.zPosition =  2
                 // levelNode.position.x = CGFloat(Int(frame.minY) + 950)
                 // levelNode.position.y = CGFloat(Int(frame.maxX) - 240)
@@ -163,14 +169,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 levelNode.fontColor = SKColor.white
                 addChild(levelNode)
             }
-          
-            // Add Score
-            scoreLabel.zPosition = 10
-            scoreLabel.position.x = CGFloat(Int(frame.minY) + 342)
-            scoreLabel.position.y = CGFloat(Int(frame.maxX) - 240)
-            scoreLabel.fontColor = SKColor.white
-            addChild(scoreLabel)
-            score = 0
             
             background.zPosition = -1
             background.size = CGSize(width: frame.maxY*1.2, height: frame.maxX)
@@ -207,6 +205,85 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: self)
             
             joystickIsActivated = knob.frame.contains(location) ? true : false
+        }
+        
+        // this method is called when the user touches the screen
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let tappedNodes = nodes(at: location)
+        
+        if tappedNodes.contains(pauseBtn) {
+            isPaused = true
+            
+            pauseBG = SKSpriteNode(imageNamed: "Rectangle.png")
+            pauseBG.zPosition = 100
+            pauseBG.size = CGSize(width: frame.maxY * 1.2, height: frame.maxX)
+            addChild(pauseBG)
+            
+            //Continue Button
+            let imageCon = UIImage(systemName: "play.circle.fill")!.withTintColor(.white)
+            let dataCon = imageCon.pngData()!
+            let newImageCon = UIImage(data:dataCon)
+            let textureCon = SKTexture(image: newImageCon!)
+            continueBtn = SKSpriteNode(texture: textureCon,size: CGSize(width: 80, height: 80))
+            continueBtn.zPosition = 101
+            continueBtn.position.y = 0
+            continueBtn.position.x = 0
+            
+            addChild(continueBtn)
+            
+            //Home button
+            let imageHome = UIImage(systemName: "house.circle.fill")!.withTintColor(.white)
+            let dataHome = imageHome.pngData()!
+            let newImageHome = UIImage(data:dataHome)
+            let textureHome = SKTexture(image: newImageHome!)
+            homeBtn = SKSpriteNode(texture: textureHome,size: CGSize(width: 80, height: 80))
+            homeBtn.zPosition = 101
+            homeBtn.position.y = 0
+            homeBtn.position.x = -120
+
+            addChild(homeBtn)
+
+            //restart button
+            let imageRes = UIImage(systemName: "arrow.counterclockwise.circle.fill")!.withTintColor(.white)
+            let dataRes = imageRes.pngData()!
+            let newImageRes = UIImage(data:dataRes)
+            let textureRes = SKTexture(image: newImageRes!)
+            restartBtn = SKSpriteNode(texture: textureRes,size: CGSize(width: 80, height: 80))
+            restartBtn.zPosition = 101
+            restartBtn.position.y = 0
+            restartBtn.position.x = 120
+
+            addChild(restartBtn)
+        }
+        
+        //if continue button is pressed
+        if tappedNodes.contains(continueBtn) {
+            print("been here!")
+            continueBtn.removeFromParent()
+            restartBtn.removeFromParent()
+            homeBtn.removeFromParent()
+            pauseBG.removeFromParent()
+            isPaused = false
+          
+        //if home button is pressed
+        } else if tappedNodes.contains(homeBtn){
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                let scene = StartMenu(fileNamed: "StartMenu")
+                scene!.scaleMode = .aspectFill
+                let transition = SKTransition.fade(withDuration: 0.5)
+                self.view?.presentScene(scene!,transition: transition)
+            }
+           
+        //if restart button is pressed
+        } else if tappedNodes.contains(restartBtn){
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                let game = GameScene(fileNamed: "GameScene")
+                game!.scaleMode = .aspectFill
+                game!.gameMode = self.gameMode
+                let transition = SKTransition.fade(withDuration: 0.5)
+                self.view?.presentScene(game!,transition: transition)
+            }
         }
     }
     
@@ -312,89 +389,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             nextStage()
         }
 
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // this method is called when the user touches the screen
-        guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        let tappedNodes = nodes(at: location)
-        
-        if tappedNodes.contains(pauseBtn) {
-            isPaused = true
-            
-            pauseBG = SKSpriteNode(imageNamed: "Rectangle.png")
-            pauseBG.zPosition = 100
-            pauseBG.size = CGSize(width: frame.maxY * 1.2, height: frame.maxX)
-            addChild(pauseBG)
-            
-            //Continue Button
-            let imageCon = UIImage(systemName: "play.circle.fill")!.withTintColor(.white)
-            let dataCon = imageCon.pngData()!
-            let newImageCon = UIImage(data:dataCon)
-            let textureCon = SKTexture(image: newImageCon!)
-            continueBtn = SKSpriteNode(texture: textureCon,size: CGSize(width: 80, height: 80))
-            continueBtn.zPosition = 101
-            continueBtn.position.y = 0
-            continueBtn.position.x = 0
-            
-            addChild(continueBtn)
-            
-            //Home button
-            let imageHome = UIImage(systemName: "house.circle.fill")!.withTintColor(.white)
-            let dataHome = imageHome.pngData()!
-            let newImageHome = UIImage(data:dataHome)
-            let textureHome = SKTexture(image: newImageHome!)
-            homeBtn = SKSpriteNode(texture: textureHome,size: CGSize(width: 80, height: 80))
-            homeBtn.zPosition = 101
-            homeBtn.position.y = 0
-            homeBtn.position.x = -120
-
-            addChild(homeBtn)
-
-            //restart button
-            let imageRes = UIImage(systemName: "arrow.counterclockwise.circle.fill")!.withTintColor(.white)
-            let dataRes = imageRes.pngData()!
-            let newImageRes = UIImage(data:dataRes)
-            let textureRes = SKTexture(image: newImageRes!)
-            restartBtn = SKSpriteNode(texture: textureRes,size: CGSize(width: 80, height: 80))
-            restartBtn.zPosition = 101
-            restartBtn.position.y = 0
-            restartBtn.position.x = 120
-
-            addChild(restartBtn)
-        }
-        
-        //if continue button is pressed
-        if tappedNodes.contains(continueBtn) {
-            print("been here!")
-            continueBtn.removeFromParent()
-            restartBtn.removeFromParent()
-            homeBtn.removeFromParent()
-            pauseBG.removeFromParent()
-            isPaused = false
-          
-        //if home button is pressed
-        } else if tappedNodes.contains(homeBtn){
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                let scene = StartMenu(fileNamed: "StartMenu")
-                scene!.scaleMode = .aspectFill
-                let transition = SKTransition.fade(withDuration: 0.5)
-                self.view?.presentScene(scene!,transition: transition)
-            }
-           
-        //if restart button is pressed
-        } else if tappedNodes.contains(restartBtn){
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                let game = GameScene(fileNamed: "GameScene")
-                game!.scaleMode = .aspectFill
-                game!.gameMode = self.gameMode
-                let transition = SKTransition.fade(withDuration: 0.5)
-                self.view?.presentScene(game!,transition: transition)
-            }
-        }
-        
-        
     }
     
 
