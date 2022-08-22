@@ -56,11 +56,8 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
             score.text = "your score : \(scoreText) pts"
             addChild(score)
         }else if gameMode == "survival"{
-            var highLevelVal = Utility.shared.getHighLevel()
-            if highLevelVal == 0{
-                Utility.shared.setHighLevel(level: levelVal!)
-                highLevelVal = Utility.shared.getHighLevel()
-            }
+            Utility.shared.setHighLevel(level: levelVal!)
+            let highLevelVal = Utility.shared.getHighLevel()
             highLevel.position.y = 67
             highLevel.fontSize = 18
             highLevel.text = "high level : \(highLevelVal)"
