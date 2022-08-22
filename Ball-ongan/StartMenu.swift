@@ -68,9 +68,13 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
             let control = touch.location(in: self.control)
             if timeAttack.y < 50 && timeAttack.y > -50 && timeAttack.x < 50 && timeAttack.x > -50 {
                 playGame(mode: "timeattack")
+                let sound = SKAction.playSoundFileNamed("pickMode", waitForCompletion: false)
+                run(sound)
             }
             if survival.y < 50 && survival.y > -50 && survival.x > -50 && survival.x < 50 {
                 playGame(mode: "survival")
+                let sound = SKAction.playSoundFileNamed("pickMode", waitForCompletion: false)
+                run(sound)
             }
             if control.y < 25 && control.y > -25 && control.x > -25 && control.x < 25{
                 changeControl()
