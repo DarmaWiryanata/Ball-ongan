@@ -401,7 +401,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         repeat {
             randomDistributionX = GKRandomDistribution(lowestValue: Int(frame.minY) + 342, highestValue: Int(frame.maxY) - 307)
-            randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 215)
+            randomDistributionY = GKRandomDistribution(lowestValue: Int(frame.minX) + 215, highestValue: Int(frame.maxX) - 275)
             
             x = randomDistributionX!.nextInt()
             y = randomDistributionY!.nextInt()
@@ -656,7 +656,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         music.removeFromParent()
         let endGame = EndGame(fileNamed: "EndGame")
         if gameMode == "survival"{
-            Utility.shared.restartScore()
             Utility.shared.restartLevel()
             endGame?.levelVal = level
         }
