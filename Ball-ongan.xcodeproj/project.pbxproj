@@ -33,6 +33,7 @@
 		FAEA2BB4282A6DDF00ED6152 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BB2282A6DDF00ED6152 /* Main.storyboard */; };
 		FAEA2BB6282A6DE100ED6152 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BB5282A6DE100ED6152 /* Assets.xcassets */; };
 		FAEA2BB9282A6DE100ED6152 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAEA2BB7282A6DE100ED6152 /* LaunchScreen.storyboard */; };
+		FAEB1C9E28B4C9C2003130EC /* GameCenterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEB1C9D28B4C9C2003130EC /* GameCenterHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		FAEA2BB3282A6DDF00ED6152 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FAEA2BB5282A6DE100ED6152 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAEA2BB8282A6DE100ED6152 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FAEB1C9D28B4C9C2003130EC /* GameCenterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				93C91D3928AE38E40037EFE6 /* Utility.swift */,
 				93D1CAF428B378F100E0EA94 /* ControlMenu.sks */,
 				93D1CAF628B37DDE00E0EA94 /* ControlMenu.swift */,
+				FAEB1C9D28B4C9C2003130EC /* GameCenterHelper.swift */,
 			);
 			path = "Ball-ongan";
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				93C91D3A28AE38E40037EFE6 /* Utility.swift in Sources */,
 				FAEA2BAF282A6DDF00ED6152 /* GameScene.swift in Sources */,
 				93D1CAF728B37DDE00E0EA94 /* ControlMenu.swift in Sources */,
+				FAEB1C9E28B4C9C2003130EC /* GameCenterHelper.swift in Sources */,
 				934AAAF728379BAA008CAE64 /* StartMenu.swift in Sources */,
 				936A56E8283A556D00F769F1 /* TutorialScene1.swift in Sources */,
 				FAEA2BB1282A6DDF00ED6152 /* GameViewController.swift in Sources */,
@@ -375,9 +379,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M6ZNZ32B86;
+				DEVELOPMENT_TEAM = 6PDVJXGB2J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Ball-ongan/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Ball-ongan Testing";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -392,7 +397,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ball-ongan";
+				PRODUCT_BUNDLE_IDENTIFIER = com.darmawiryanata.ballongan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -407,9 +412,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M6ZNZ32B86;
+				DEVELOPMENT_TEAM = 6PDVJXGB2J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Ball-ongan/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Ball-ongan Testing";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -424,7 +430,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ball-ongan";
+				PRODUCT_BUNDLE_IDENTIFIER = com.darmawiryanata.ballongan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

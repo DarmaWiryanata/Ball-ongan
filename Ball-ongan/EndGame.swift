@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import GameKit
 import GameplayKit
 import CoreMotion
 
@@ -126,6 +127,12 @@ class EndGame: SKScene, SKPhysicsContactDelegate {
                     scene!.scaleMode = .aspectFill
                     let transition = SKTransition.fade(withDuration: 0.5)
                     self.view?.presentScene(scene!,transition: transition)
+                    
+                    if #available(iOS 14.0, *) {
+                        GKAccessPoint.shared.location = .topLeading
+                        GKAccessPoint.shared.showHighlights = true
+                        GKAccessPoint.shared.isActive = true
+                    }
                 }
             }
             

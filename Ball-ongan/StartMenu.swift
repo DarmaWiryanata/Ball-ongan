@@ -7,6 +7,7 @@
 
 import SpriteKit
 import GameplayKit
+import GameKit
 import CoreMotion
 
 class StartMenu: SKScene, SKPhysicsContactDelegate {
@@ -96,6 +97,10 @@ class StartMenu: SKScene, SKPhysicsContactDelegate {
             game!.gameMode = mode
             let transition = SKTransition.fade(withDuration: 0.3)
             self.view?.presentScene(game!,transition: transition)
+            
+            if #available(iOS 14.0, *) {
+                GKAccessPoint.shared.isActive = false
+            }
         }
     }
     func changeControl(){
