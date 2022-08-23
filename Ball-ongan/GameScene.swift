@@ -680,6 +680,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let transition = SKTransition.fade(withDuration: 0.3)
         self.view?.presentScene(endGame!,transition: transition)
         
+        // Submit score to GC leaderboard
+        let bestScoreInt = GKScore(leaderboardIdentifier: gameMode ?? "timeattack")
+        bestScoreInt.value = Int64(gameMode == "survival" ? level : score)
+        GKScore.report([bestScoreInt]) { (error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                print("Best Score submitted to your Leaderboard!")
+            }
+        }
+        
         if #available(iOS 14.0, *) {
             GKAccessPoint.shared.location = .topLeading
             GKAccessPoint.shared.showHighlights = true
