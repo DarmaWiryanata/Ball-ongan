@@ -592,6 +592,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 Utility.shared.setLevel(level: level)
             }
         }
+        
+        // Report result to GC achievement
+        if let currentGameMode = gameMode {
+            checkAchievements(mode: currentGameMode, score: currentGameMode == "timeattack" ? score : level)
+        }
+        
         stageScore = 0
         stagePoint = 0
         
@@ -660,7 +666,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    
     func obstacleByDuplicatingPath(_ path: UIBezierPath, clockwise: Bool, divider : Int, glow: Int) -> SKNode {
         let container = SKNode()
         let one_part : Double = 2 / Double(divider) * Double.pi
@@ -716,6 +721,105 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             GKAccessPoint.shared.isActive = true
         }
     }
+    
+    func checkAchievements(mode: String, score: Int) {
+           
+        var achievementsToReport : [GKAchievement] = []
+        
+        if mode == "survival" {
+            
+            // Count By Fingers
+            if score > 10 {
+                let achievement = GKAchievement(identifier: "countByFingers")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Acquire a Quarter
+            if score > 25 {
+                let achievement = GKAchievement(identifier: "acquireAQuarter")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Longan Protector
+            if score > 50 {
+                let achievement = GKAchievement(identifier: "longanProtector")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Conqueror of Galaxy
+            if score > 100 {
+                let achievement = GKAchievement(identifier: "conquerorOfGalaxy")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Don't Stop Believin
+            if score > 500 {
+                let achievement = GKAchievement(identifier: "dontStopBelievin")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Go To Sleep
+            if score > 1000 {
+                let achievement = GKAchievement(identifier: "goToSleep")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+        } else if mode == "timeattack" {
+            
+            // Kickoff
+            if score >= 50 {
+                let achievement = GKAchievement(identifier: "kickoff")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Almost a Hundred
+            if score >= 75 {
+                let achievement = GKAchievement(identifier: "almostAHundred")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Big Hit
+            if score >= 100 {
+                let achievement = GKAchievement(identifier: "bigHit")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+            // Longan Defender
+            if score >= 200 {
+                let achievement = GKAchievement(identifier: "longanDefender")
+                achievement.percentComplete = 100
+                
+                achievementsToReport.append(achievement)
+            }
+            
+        }
+        
+        GKAchievement.report(achievementsToReport, withCompletionHandler: {(error: Error?) in
+            if error != nil {
+                // Handle the error that occurs.
+                print("Error: \(String(describing: error))")
+            }
+        })
+        
+     }
     
 }
 
