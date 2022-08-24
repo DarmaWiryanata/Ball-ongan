@@ -403,8 +403,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     enum goalPosition: Int {
-    case min = -25
-    case max = 25
+    case min = -50
+    case max = 50
     }
 
     func randomDistribution() -> [String : Int] {
@@ -422,8 +422,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             x = randomDistributionX!.nextInt()
             y = randomDistributionY!.nextInt()
         } while // Compare with player position
-                (x > playerPosition.minX.rawValue && x < playerPosition.maxX.rawValue)
-             || (y > playerPosition.minY.rawValue && y < playerPosition.maxY.rawValue)
+                (x > playerPosition.minY.rawValue && x < playerPosition.maxY.rawValue)
+             || (y > playerPosition.minX.rawValue && y < playerPosition.maxX.rawValue)
                 // Compare with goal position
              || (x > goalPosition.min.rawValue && x < goalPosition.max.rawValue)
              || (y > goalPosition.min.rawValue && y < goalPosition.max.rawValue)
