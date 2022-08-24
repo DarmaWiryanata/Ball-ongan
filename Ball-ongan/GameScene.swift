@@ -30,6 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var stageScore = 0
     private var stagePoint = 0
     
+    
     private var score = 0 {
         didSet {
             scoreLabel.text = "\(score) pts"
@@ -385,7 +386,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if player.position.y > screenMaxY {
             player.position.y = screenMaxY
         }
-
+        
         // Go to next stage
         if player.position.x > -40 && player.position.x < 40 && player.position.y > -40 && player.position.y < 40 {
             nextStage()
@@ -508,6 +509,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch node.name {
         case "point":
             playerHitPoint()
+            
         case "obstacle":
             
             //TODO: feedback when hitting the node
@@ -527,6 +529,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if gameMode == "timeattack"{
                 time -= 10
+                let feedbackLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+                feedbackLabel.text = "-10"
+                feedbackLabel.zPosition = 10
+                feedbackLabel.position.x = 70
+                feedbackLabel.position.y = CGFloat(Int(frame.maxX) - 240)
+                feedbackLabel.fontColor = SKColor.red
+                addChild(feedbackLabel)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    feedbackLabel.removeFromParent()
+                }
             }
             else if gameMode == "survival"{
                 endGame()
@@ -601,6 +614,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Longan
     func addCircleObstacle(divider : Int, glow : Int, circle_rotation : Double) {
         
+        //if full circle
+        if stagePoint == stageScore{
+            let sound = SKAction.playSoundFileNamed("fullStar", waitForCompletion: false)
+            run(sound)
+        }
+        
         // Circle outline
         var path = UIBezierPath()
         let one_part : Double = 2 / Double(divider)
@@ -612,7 +631,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     clockwise: false)
         let circle_outline = obstacleByDuplicatingPath(path, clockwise: true, divider: divider, glow: glow)
         circle_outline.position = CGPoint(x: 0, y: 0)
-        circle_outline.zPosition = 0
+        circle_outline.zPosition = 1
         circle_outline.name = "goalPoints"
         addChild(circle_outline)
         
@@ -634,7 +653,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         section.fillColor = color
         section.strokeColor = color
-        section.zPosition = 0
+        section.zPosition = 1
         section.name = "goal"
         
         addChild(section)
