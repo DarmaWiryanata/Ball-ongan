@@ -23,12 +23,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var homeBtn = SKSpriteNode()
     private var restartBtn = SKSpriteNode()
     private var pauseBG = SKSpriteNode()
-    
+    private var physicItem = SKSpriteNode()
+    private var textureItem = SKTexture()
+    private var sizeItem = CGSize()
     private var touchControl = Utility.shared.getControl()
     private var scoreLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var stageScore = 0
     private var stagePoint = 0
-    
+    private var immortalSpend  = 0
+    private var timeStatus = false
     private var score = 0 {
         didSet {
             scoreLabel.text = "\(score) pts"
@@ -45,7 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             levelNode.text = String("level \(level)")
         }
     }
-    private var time: Int = 21 {
+    private var time: Int = 0 {
         didSet {
             if time >= 0{
                 if time <= 120 && time % 60 < 10 {
@@ -90,17 +93,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   
     private func countdown() -> Void {
+        if (timeStatus == true){
+            if (immortalSpend == 1){
+                time -= 1
 
-        time -= 1
+                if (time <= 0 ) {
+                    stopImmortal()
+                    
+                }
+            }else{
+                time -= 1
 
-        if (time <= 0 ) {
-            endGame()
+                if (time <= 0 ) {
+                    timeStatus = false
+                    endGame()
+                }
+            }
         }
-
     }
     
     private var pointsTotal = GKRandomDistribution(lowestValue: 3, highestValue: 10)
     private var obstaclesTotal = GKRandomDistribution(lowestValue: 3, highestValue: 7)
+    private var immortalTotal = GKRandomDistribution(lowestValue: 0, highestValue: 1)
     
     // Accelerometer control
     let motionManager = CMMotionManager()
@@ -140,8 +154,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 timerNode.fontColor = SKColor.white
                 addChild(timerNode)
                 time = 120
+                timeStatus = true
                 run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
             } else if gameMode == "survival" {
+                createImmortalItem()
                 // Add level
                 if level == 0 {
                     level += 1
@@ -168,6 +184,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             createPlayer()
             createPoint()
             createObstacle()
+           
             
             if !touchControl {
                 // Accelerometer control
@@ -285,7 +302,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let v = CGVector(dx: location.x - joystick.position.x, dy: location.y - joystick.position.y)
             let angle = atan2(v.dy, v.dx)
             
-            let deg = angle * CGFloat(180 / Double.pi)
+            _ = angle * CGFloat(180 / Double.pi)
             
             let length: CGFloat = joystick.frame.size.height / 2
             
@@ -332,7 +349,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.size = CGSize(width: 50, height: 50)
         player.position = CGPoint(x: -150, y: 0)
         player.name = "player"
-        player.zPosition = 1
+        player.zPosition = 10
 
         player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.size)
         player.physicsBody?.affectedByGravity = false
@@ -418,6 +435,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ]
 
     }
+    
 
     func createPoint() {
 
@@ -470,9 +488,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             sprite.physicsBody?.affectedByGravity = false
             sprite.physicsBody?.contactTestBitMask = 1
             sprite.physicsBody?.categoryBitMask = 0
-
+            
+            textureItem = sprite.texture!
+            sizeItem = sprite.size
         }
 
+    }
+    
+    func createImmortalItem() {
+
+        let obTotal: Int = self.immortalTotal.nextInt()
+
+        for _ in 0..<obTotal {
+
+            let position = randomDistribution()
+            guard let posX = position["x"] else { continue }
+            guard let posY = position["y"] else { continue }
+
+            let sprite = SKSpriteNode(imageNamed: "ImmortalItem")
+            sprite.position = CGPoint(x: posX, y: posY)
+            sprite.size = CGSize(width: 40, height: 40)
+            sprite.name = "immortal"
+            sprite.zPosition = 1
+            addChild(sprite)
+
+            sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
+            sprite.physicsBody?.affectedByGravity = false
+            sprite.physicsBody?.contactTestBitMask = 1
+            sprite.physicsBody?.categoryBitMask = 0
+
+        }
+        
+
+    }
+    func stopImmortal() {
+        immortalSpend = 0
+        timeStatus = false
+        for c in children {
+            if c.name == "timeImmortal" {
+                c.removeFromParent()
+            }
+            if c.name == "obstacle" {
+                c.physicsBody = SKPhysicsBody(texture: textureItem, size: sizeItem)
+                c.physicsBody?.affectedByGravity = false
+                c.physicsBody?.contactTestBitMask = 1
+                c.physicsBody?.categoryBitMask = 0
+                
+            }
+        }
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
@@ -493,6 +556,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch node.name {
         case "point":
             playerHitPoint()
+            node.removeFromParent()
+        case "immortal":
+            playerHitImmortal()
+            node.removeFromParent()
         case "obstacle":
             
             //TODO: feedback when hitting the node
@@ -512,17 +579,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if gameMode == "timeattack"{
                 time -= 10
+                node.removeFromParent()
             }
             else if gameMode == "survival"{
-                endGame()
+                if immortalSpend == 0 {
+                    endGame()
+                }
             }
             
         default:
             print("empty node")
         }
 
-        node.removeFromParent()
+        
 
+    }
+    
+    func playerHitImmortal() {
+        immortalSpend = 1
+        for c in children {
+            if c.name == "obstacle"{
+                physicItem = c.copy() as! SKSpriteNode
+                c.physicsBody = nil
+            }
+        }
+        // Add Timer
+        timerNode.zPosition =  2
+        timerNode.position.y = CGFloat(Int(frame.maxX) - 240)
+        timerNode.fontColor = SKColor.white
+        timerNode.name = "timeImmortal"
+        addChild(timerNode)
+        time = 5
+        timeStatus = true
+        run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown),SKAction.wait(forDuration: 1)])))
     }
     
     func playerHitPoint() {
@@ -559,6 +648,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 score += stageScore
             }
             else if gameMode == "survival"{
+                stopImmortal()
+                createImmortalItem()
                 score += stageScore
                 level += 1
                 Utility.shared.setLevel(level: level)
