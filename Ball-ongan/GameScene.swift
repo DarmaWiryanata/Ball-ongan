@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import GameKit
 import GameplayKit
 import CoreMotion
 import Foundation
@@ -30,8 +31,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var scoreLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
     private var stageScore = 0
     private var stagePoint = 0
+    
     private var immortalSpend  = 0
     private var timeStatus = false
+    
     private var score = 0 {
         didSet {
             scoreLabel.text = "\(score) pts"
@@ -135,6 +138,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             tutorial!.gameMode = self.gameMode
             let transition = SKTransition.fade(withDuration: 0.3)
             self.view?.presentScene(tutorial!,transition: transition)
+            
+            if #available(iOS 14.0, *) {
+                GKAccessPoint.shared.isActive = false
+            }
         } else {    
             // Pause button
             addChild(pauseButton())
@@ -277,6 +284,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 scene!.scaleMode = .aspectFill
                 let transition = SKTransition.fade(withDuration: 0.5)
                 self.view?.presentScene(scene!,transition: transition)
+                
+                if #available(iOS 14.0, *) {
+                    GKAccessPoint.shared.location = .topLeading
+                    GKAccessPoint.shared.showHighlights = true
+                    GKAccessPoint.shared.isActive = true
+                }
             }
            
         //if restart button is pressed
@@ -287,6 +300,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 game!.gameMode = self.gameMode
                 let transition = SKTransition.fade(withDuration: 0.5)
                 self.view?.presentScene(game!,transition: transition)
+                
+                if #available(iOS 14.0, *) {
+                    GKAccessPoint.shared.isActive = false
+                }
             }
         }
     }
@@ -387,7 +404,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if player.position.y > screenMaxY {
             player.position.y = screenMaxY
         }
-
+        
         // Go to next stage
         if player.position.x > -40 && player.position.x < 40 && player.position.y > -40 && player.position.y < 40 {
             nextStage()
@@ -404,8 +421,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     enum goalPosition: Int {
-    case min = -25
-    case max = 25
+    case min = -50
+    case max = 50
     }
 
     func randomDistribution() -> [String : Int] {
@@ -423,8 +440,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             x = randomDistributionX!.nextInt()
             y = randomDistributionY!.nextInt()
         } while // Compare with player position
-                (x > playerPosition.minX.rawValue && x < playerPosition.maxX.rawValue)
-             || (y > playerPosition.minY.rawValue && y < playerPosition.maxY.rawValue)
+                (x > playerPosition.minY.rawValue && x < playerPosition.maxY.rawValue)
+             || (y > playerPosition.minX.rawValue && y < playerPosition.maxX.rawValue)
                 // Compare with goal position
              || (x > goalPosition.min.rawValue && x < goalPosition.max.rawValue)
              || (y > goalPosition.min.rawValue && y < goalPosition.max.rawValue)
@@ -580,6 +597,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if gameMode == "timeattack"{
                 time -= 10
                 node.removeFromParent()
+                
+                let feedbackLabel = SKLabelNode(fontNamed: "IM FELL DW Pica SC")
+                feedbackLabel.text = "-10"
+                feedbackLabel.zPosition = 10
+                feedbackLabel.position.x = 70
+                feedbackLabel.position.y = CGFloat(Int(frame.maxX) - 240)
+                feedbackLabel.fontColor = SKColor.red
+                addChild(feedbackLabel)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    feedbackLabel.removeFromParent()
+                }
             }
             else if gameMode == "survival"{
                 if immortalSpend == 0 {
@@ -677,6 +706,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // Longan
     func addCircleObstacle(divider : Int, glow : Int, circle_rotation : Double) {
         
+        //if full circle
+        if stagePoint == stageScore{
+            let sound = SKAction.playSoundFileNamed("fullStar", waitForCompletion: false)
+            run(sound)
+        }
+        
         // Circle outline
         var path = UIBezierPath()
         let one_part : Double = 2 / Double(divider)
@@ -688,7 +723,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     clockwise: false)
         let circle_outline = obstacleByDuplicatingPath(path, clockwise: true, divider: divider, glow: glow)
         circle_outline.position = CGPoint(x: 0, y: 0)
-        circle_outline.zPosition = 0
+        circle_outline.zPosition = 1
         circle_outline.name = "goalPoints"
         addChild(circle_outline)
         
@@ -710,7 +745,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         section.fillColor = color
         section.strokeColor = color
-        section.zPosition = 0
+        section.zPosition = 1
         section.name = "goal"
         
         addChild(section)
@@ -755,6 +790,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         endGame!.scaleMode = .aspectFill
         let transition = SKTransition.fade(withDuration: 0.3)
         self.view?.presentScene(endGame!,transition: transition)
+        
+        // Submit score to GC leaderboard
+        let bestScoreInt = GKScore(leaderboardIdentifier: gameMode ?? "timeattack")
+        bestScoreInt.value = Int64(gameMode == "survival" ? level : score)
+        GKScore.report([bestScoreInt]) { (error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                print("Best Score submitted to your Leaderboard!")
+            }
+        }
+        
+        if #available(iOS 14.0, *) {
+            GKAccessPoint.shared.location = .topLeading
+            GKAccessPoint.shared.showHighlights = true
+            GKAccessPoint.shared.isActive = true
+        }
     }
     
 }

@@ -8,6 +8,7 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import GameKit
 
 class GameViewController: UIViewController {
 
@@ -30,6 +31,12 @@ class GameViewController: UIViewController {
 
                 // Present the scene
                 view.presentScene(scene)
+                
+                if #available(iOS 14.0, *) {
+                    GKAccessPoint.shared.location = .topLeading
+                    GKAccessPoint.shared.showHighlights = true
+                    GKAccessPoint.shared.isActive = true
+                }
             }
           
             view.ignoresSiblingOrder = true
@@ -37,6 +44,9 @@ class GameViewController: UIViewController {
             view.showsFPS = false
             view.showsNodeCount = false
         }
+        
+        // MARK: Game Center integration
+        GameKitHelper.sharedInstance.authenticateLocalPlayer(view: self.view as! SKView)
     }
 
     override var shouldAutorotate: Bool {
